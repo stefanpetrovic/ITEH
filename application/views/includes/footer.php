@@ -1,6 +1,6 @@
       
     </div>
-    <div class="col-md-3" style="background-color: blue; height: 700px;">
+    <div class="col-md-3" style="background-color: blue; height: 1000px;">
       
     </div>
   </div>

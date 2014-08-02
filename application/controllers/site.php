@@ -3,7 +3,7 @@
 class Site extends CI_Controller {
 	
 	public function index() {
-		$data['main_content'] = 'proba';
+		$data['main_content'] = 'registracija-korisnika';
 		$this->load->view('includes/template', $data);
 	}
 	public function registracija() {

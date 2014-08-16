@@ -1,7 +1,0 @@
-document.write('<!--  Begin Rubicon Project Tag -->\n<!--  Site: Yahoo Secure Tags   Zone: Serbia   Size: Leaderboard  -->\n<scr' + 'ipt language=\"JavaScript\" type=\"text/javascript\">\nrp_account   = \'9061\';\nrp_site      = \'27646\';\nrp_zonesize  = \'113088-2\';\nrp_adtype    = \'js\';\nrp_smartfile = \'[SMART FILE URL]\';\n</scr' + 'ipt>\n<scr' + 'ipt type=\"text/javascript\" src=\"https://ads.rubiconproject.com/ad/9061.js\"></scr' + 'ipt>\n<!--  End Rubicon Project Tag -->');
-var rm_data = new Object();
-rm_data.creative_id = 23608191;
-rm_data.offer_type = 3;
-rm_data.entity_id = 654895;
-
-if (window.rm_crex_data) {rm_crex_data.push(23608191);}

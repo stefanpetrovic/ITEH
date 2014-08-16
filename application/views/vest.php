@@ -1,10 +1,14 @@
 <!-- Container za sadrzaj glavno dela strane -->
 <div class="row">
+	<?php 
+		if ($clanak) {
+			$clanak = $clanak[0];
+	?>
 	<!-- Kolona za sliku autora i + - -->
-	<div class="col-md-2" style="border-style: solid; height: 200px;">
+	<div class="col-md-2" style="height: 200px;">
 
-		<img class="center-block" src="<?php echo base_url();?>images/autor.jpg"/>
-		<p class="text-center">Stefan Petrovic</p>
+		<!-- <img class="center-block" src="<?php echo base_url() . featuredImage;?>"/> -->
+		<p class="text-center"><?php echo $clanak->username;?></p>
 
 		<br/>
 
@@ -14,19 +18,14 @@
 		</p>
 	</div>
 	<!-- Kolona za clanak -->
-	<div class="col-md-7" style="border-style: solid; height: 200px;">
+	<div class="col-md-7" style="height: 200px;">
 		<div class="page-header">
-			<h1>Primer naslova <small>subtext za naslov, bla bla bla bla bla bla bla bla bla bla bla bla</small></h1>
+			<h1><?php echo $clanak->naslov;?></h1>
 		</div>
-		<img src="<?php echo base_url();?>images/vest1Slika.jpg" class="center-block img-responsive"/>
+		<img src="<?php echo base_url() . $clanak->featuredImage;?>" class="center-block img-responsive"/>
 		<!-- Sadrzaj clanka -->
 		<div>
-			<p>Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.
-			Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.Prvi paragraf.</p><br/>
-			<p>Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.
-			Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.Drugi paragraf.</p><br/>
-			<p>Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.
-			Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.Treci paragraf.</p><br/>
+			<?php echo $clanak->dugiTekst?>
 		</div>
 
 		<!-- Komentari -->
@@ -35,7 +34,7 @@
 			<ul class="media-list">
 				<li class="media">
 					<a href="#" class="pull-left">
-						<img class="media-oject" src="<?php echo base_url();?>images/autor.jpg"/>
+						<img class="media-object" src="<?php echo base_url();?>images/autor.jpg"/>
 					</a>
 					<div class="media-body">
 						<h4 class="media-heading">User in reply to user2</h4>
@@ -48,7 +47,7 @@
 					<ul id="collapseOne" class="collapse in">
 						<li class="media">
 							<a href="#" class="pull-left">
-								<img class="media-oject" src="<?php echo base_url();?>images/autor.jpg"/>
+								<img class="media-object" src="<?php echo base_url();?>images/autor.jpg"/>
 							</a>
 							<div class="media-body">
 								<h4 class="media-heading">User in reply to user2</h4>
@@ -171,6 +170,11 @@
 				</div>
 			</div>
 		</div>
-	
+
 	</div>
+	<?php 
+		}else {
+			echo "Greska prilikom ucitavanja vesti";
+		}
+	?>
 </div>

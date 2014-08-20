@@ -20,6 +20,8 @@ class Site extends CI_Controller {
 
 	public function vest($idVesti) {
 		$data['clanak'] = $this->glavni_model->vratiClanakZaID($idVesti);
+		$data['komentari'] = $this->glavni_model->vratiKomentareZaClanak($idVesti);
+		$data['povezaniClanci'] = $this->glavni_model->vratiPovezaneClanke($idVesti);
 		$data['main_content'] = "vest";
 		$this->load->view('includes/template', $data);	
 	}

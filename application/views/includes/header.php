@@ -23,11 +23,11 @@
 		<div class="col-md-9">
 			<!-- Header -->
       <div class="row">
-        <div class="col-xs-3" style="background-color: green; height: 150px;">
-          logo
+        <div class="col-xs-3" style="height: 150px; background-image: url('<?php echo base_url()?>images/logo.png'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">
+          
         </div>
-        <div class="col-xs-9" style="background-color: grey; height: 150px;">
-          baner
+        <div class="col-xs-9" style="height: 150px; background-image: url('<?php echo base_url()?>images/banner.png'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">
+          
         </div>
       </div>
       <!-- Menu -->
@@ -35,7 +35,7 @@
         <div class="col-md-10 col-md-offset-1" style="height: 40px;">
           <ul class="nav nav-pills" role="tablist">
             <li class="active"><a href="#">Naslovna</a></li>
-            <li><a href="#">Fudbal</a></li>
+            <li><a href="<?php echo base_url();?>">Fudbal</a></li>
             <li><a href="#">Kosarka</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">

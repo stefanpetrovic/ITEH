@@ -8,6 +8,7 @@ $this->load->view('admin/head.php');
     <div class="row">
       <?php
       $this->load->view('admin/admin_header.php');
+      //var_dump($najcitanijiClanci);
       ?>
 
 
@@ -25,89 +26,21 @@ $this->load->view('admin/head.php');
             </tr>
           </thead>
           <tbody>
+            <?php foreach ($najcitanijiClanci as $clanak): ?>
+              
+           
 
             <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
+              <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
+              <td><a href='#'><p class='heading'><?php echo $clanak->naslov; ?></p></a></td>
+              <td><a href='#'><p class='sm-heading'><?php echo $clanak->username; ?></p></a></td>
+              <td><a href='#'><p class='sm-heading'><?php echo $clanak->datum; ?></p></a></td>
               <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
               <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
             </tr>
             
-
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
-              <tr>
-              <td><p class='heading'>1</p></td>
-              <td><a href='#'><p class='heading'>Heading of an article</p></a></td>
-              <td><a href='#'><p class='sm-heading'>Petar</p></a></td>
-              <td><a href='#'><p class='sm-heading'>20.08.2012.</p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
+ <?php endforeach ?>
+              
             
           </tbody>
         </table>

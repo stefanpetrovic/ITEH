@@ -1,0 +1,162 @@
+@media (min-width: 768px) {
+  .navbar-collapse {
+    height: auto;
+    border-top: 0;
+    box-shadow: none;
+    max-height: none;
+    padding-left:0;
+    padding-right:0;
+  }
+  .navbar-collapse.collapse {
+    display: block !important;
+    width: auto !important;
+    padding-bottom: 0;
+    overflow: visible !important;
+  }
+  .navbar-collapse.in {
+    overflow-x: visible;
+  }
+
+.navbar
+{
+	max-width:300px;
+	margin-right: 0;
+	margin-left: 0;
+}	
+
+.navbar-nav,
+.navbar-nav > li,
+.navbar-left,
+.navbar-right,
+.navbar-header
+{float:none !important;}
+
+.navbar-right .dropdown-menu {left:0;right:auto;}
+.navbar-collapse .navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+}
+
+.navbar-brand{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.nav img{
+  height: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.nav li:hover{
+  background-color: #012142;
+}
+
+.nav li{
+  background-color: #003366;
+  text-align: center;
+  
+}
+
+.navbar-default .navbar-nav>.active>a, 
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus{
+  background-color: #012142;
+  color: #ddd;
+}
+.navbar-default .navbar-nav>li>a{
+  color: #ddd; 
+}
+.navbar-default .navbar-nav>li>a:hover{
+  color: #fff; 
+}
+
+#wrapper .row .col-md-2 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+#nav-holder{
+  background-color: #003366;
+}
+
+#news-preview{
+  background-color: #DCD0C0;
+}
+
+
+
+#news-preview .category{
+  display: inline-block;
+  padding: 3px;
+  margin: 5px 2px 0px;
+
+  background-color: #f2ede6;
+}
+
+#news-one{
+  /*background-color: #f2ede6;*/
+}
+
+.navbar {
+  border: 0px;
+}
+
+/*same row heights*/
+.row {
+    display: table;
+}
+
+.row .main-col {
+    float: none;
+    display: table-cell;
+    vertical-align: top;
+}
+
+#news-one .col-md-10{
+  text-align: justify;
+}
+
+a {
+  color: #003366;
+}
+
+a:hover{
+  color: #001224;
+  text-decoration: none;
+}
+
+.table .heading{
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.table .sm-heading{
+  margin-top: 10px;
+}
+
+#menu {
+  font-size: 16px;
+}
+
+/*---*/
+
+
+
+/*
+hover crvena: b84842;
+                        crvena: DA635D;
+plava: 003366;
+hover plava: 012142;
+pozadina bezh: DCD0C0;
+svetlija bezh: f2ede6;
+
+pozadina siva: ;
+
+
+
+
+*/

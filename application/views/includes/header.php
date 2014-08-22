@@ -8,7 +8,8 @@
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url();?>css/bootstrap.min.css" rel="stylesheet">
-
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,32 +32,23 @@
         </div>
       </div>
       <!-- Menu -->
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1" style="height: 40px;">
+      <div class="row" style="height: 60px;">
+        <div class="col-md-10 col-md-offset-1" style="height: 40px; padding: 10px;">
           <ul class="nav nav-pills" role="tablist">
-            <li class="active"><a href="#">Naslovna</a></li>
-            <li><a href="<?php echo base_url();?>">Fudbal</a></li>
-            <li><a href="#">Kosarka</a></li>
+            <li class="active"><a href="<?php echo base_url().'site/index';?>">Naslovna</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal';?>">Fudbal</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/kosarka';?>">Kosarka</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 Ostali sportovi <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="kategorije/kategorijaA">Kategorija A</a></li>
-                <li><a href="kategorije/kategorijaB">Kategorija B</a></li>
+                <li><a href="#">Kategorija A</a></li>
+                <li><a href="#">Kategorija B</a></li>
               </ul>
             </li>
             <li><a href="#">Kontakt</a></li>
             <li><a href="#">Najcitanije</a></li>
           </ul>
-          
-          <!-- <div class="row">
-            <div class="col-xs-2" style="background-color: yellow; height: 30px;">Menu 1</div>
-            <div class="col-xs-2" style="background-color: purple; height: 30px;">Menu 2</div>
-            <div class="col-xs-2" style="background-color: yellow; height: 30px;">Menu 3</div>
-            <div class="col-xs-2" style="background-color: purple; height: 30px;">Menu 4</div>
-            <div class="col-xs-2" style="background-color: yellow; height: 30px;">Menu 5</div>
-            <div class="col-xs-2" style="background-color: purple; height: 30px;">Menu 6</div>
-            </div> -->
         </div>
       </div>

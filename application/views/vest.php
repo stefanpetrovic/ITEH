@@ -5,16 +5,16 @@
 			$clanak = $clanak[0];
 	?>
 	<!-- Kolona za sliku autora i + - -->
-	<div class="col-md-2" style="height: 200px;">
+	<div class="col-md-2" style="height: 200px;padding-top: 50px;">
 
-		<!-- <img class="center-block" src="<?php echo base_url() . featuredImage;?>"/> -->
+		<img class="center-block" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
 		<p class="text-center"><?php echo $clanak -> username; ?></p>
 
 		<br/>
 
 		<p class="text-center">
-			<button type="button" class="btn btn-link" style="font-size: 20px">+</button>
-			<button type="button" class="btn btn-link" style="font-size: 20px">-</button>
+			<button type="button" class="btn btn-link" id="plus" style="font-size: 20px">+</button>
+			<button type="button" class="btn btn-link" id="minus" style="font-size: 20px">-</button>
 		</p>
 	</div>
 	<!-- Kolona za clanak -->
@@ -52,8 +52,15 @@
 					<img class="media-object pull-left" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
 					<div class="media-body">
 						<h4 class="media-heading"><?php echo $komentar->username; ?> <small>on <?php echo $komentar->datum; ?></small></h4>
-						<?php echo $komentar->tekst; ?>
-						
+						<p><?php echo $komentar->tekst; ?></p>
+						<div>
+							<p class="text-left" style="float: left;">
+								<button type="button" class="btn btn-link" id="plus" style="font-size: 20px" onclick="oceni(<?php echo $komentar->komentarID;?>, 1);">+</button>
+								<button type="button" class="btn btn-link" id="minus" style="font-size: 20px" onclick="oceni(<?php echo $komentar->komentarID;?>, -1);">-</button>
+								
+							</p>
+							<p style="float: left; font-size: 17px; padding-top: 10px;" id="brojacGlasova<?php echo $komentar->komentarID; ?>"><?php echo ($komentar->likes - $komentar->dislikes); ?></p>
+						</div>
 						
 						
 					</div>
@@ -77,14 +84,23 @@
 						}
 					
 				?>
-				
-						<li class="media">
-							<img class="media-object pull-left" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
-							<div class="media-body">
-								<h4 class="media-heading"><?php echo $komentar->username; ?> <small>on <?php echo $komentar->datum; ?></small></h4>
-								<?php echo $komentar->tekst; ?>
-							</div>
-						</li>
+				<li class="media">
+					<img class="media-object pull-left" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
+					<div class="media-body">
+						<h4 class="media-heading"><?php echo $komentar->username; ?> <small>on <?php echo $komentar->datum; ?></small></h4>
+						<p><?php echo $komentar->tekst; ?></p>
+						<div>
+							<p class="text-left" style="float: left;">
+								<button type="button" class="btn btn-link" id="plus" style="font-size: 20px" onclick="oceni(<?php echo $komentar->komentarID;?>, 1);">+</button>
+								<button type="button" class="btn btn-link" id="minus" style="font-size: 20px" onclick="oceni(<?php echo $komentar->komentarID;?>, -1);">-</button>
+								
+							</p>
+							<p style="float: left; font-size: 17px; padding-top: 10px;" id="brojacGlasova<?php echo $komentar->komentarID; ?>"><?php echo ($komentar->likes - $komentar->dislikes); ?></p>
+						</div>
+						
+						
+					</div>
+				</li>
 					
 				<?php
 						
@@ -129,118 +145,35 @@
 	<?php
 		}
 	?>
-	
-		<!-- <div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 100px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6" style="height: 30px;">
-						Naslov broj 1
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 100px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6" style="height: 30px;">
-						Naslov broj 1, duzina naslova moze biti problem
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 110px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Naslov broj 1
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 100px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Naslov broj 1, duzina naslova moze biti problem
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 110px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Naslov broj 1, duzina naslova moze biti problem
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" style="height: 130px;">
-				<div class="row">
-					<div class="col-md-12" style="height: 110px;"><img src="<?php echo base_url(); ?>images/download.jpg" class="img-responsive"/></div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						Naslov broj 1, duzina naslova moze biti problem
-						<?php print_r($povezaniClanci); ?>
-					</div>
-					<div class="col-md-4" style="font-size: 10px;">
-						by: Stefan Petrovic
-					</div>
-					<div class="col-md-2" style="font-size: 10px;">
-						+-20
-					</div>
-				</div>
-			</div>
-		</div> -->
 		
 	</div>
+	<script type="text/javascript">
+		function oceni(komentarID, ocena) {
+			var podaci = {
+				komentarID: komentarID,
+				korisnikID: '4',
+				like : ocena
+			};
+			$.ajax({
+				url: "<?php echo site_url('site/lajk');?>",
+				type: 'POST',
+				data: podaci,
+				async: false,
+				success: function(msg) {
+					var podaci = jQuery.parseJSON(msg);
+					alert(podaci.brojKomentara);
+					alert(podaci.poruka);
+					if (podaci.poruka == 'Uspesno dodat glas') {
+						$('#brojacGlasova' + komentarID).html(podaci.brojKomentara);	
+					}
+					
+				}
+			});
+			return false;
+		}
+		
+	</script>
+	
 	<?php
 		}else {
 		echo "Greska prilikom ucitavanja vesti";

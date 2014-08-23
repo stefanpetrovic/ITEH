@@ -28,11 +28,20 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav" id="menu">
-      <li class><a href="#">
+       <li class><a href="admin">
+        Početna
+      </a></li>
+      <li class><a href="admin/clanci">
         Članci
       </a></li>
       <li><a href="#">
        Kategorije
+      </a></li>
+      <li class><a href="#">
+        Komentari
+      </a></li>
+      <li class><a href="#">
+        Korisnici
       </a></li>
       
     </ul>
@@ -46,7 +55,7 @@
 
 
     <!-- 3rd column -->
-  <div class="col-md-10 main-col" id="news-one">
+  <div class="col-md-9 main-col" id="news-one">
     <h1 style="margin-top: 100px;">Welcome to sports!</h1>
   </div>  <!-- End of 3rd column -->
 

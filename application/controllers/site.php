@@ -6,6 +6,7 @@ class Site extends CI_Controller {
 		$najcitanijiClanci = $this->glavni_model->pet_najcitanijih();
 		$data['main_content'] = 'index';
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
+		$data['mixClanci'] = $this->glavni_model->najsvezijiClanci();
  		$this->load->view('includes/template', $data);
 	}
 	public function registracija() {
@@ -31,6 +32,24 @@ class Site extends CI_Controller {
 		$data['main_content'] = "vestiPoKategoriji";
 		$this->load->view('includes/template', $data);	
 	}
+	
+	public function lajk() {
+		$komentarID = $this->input->post('komentarID');
+		$korisnikID = $this->input->post('korisnikID');
+		$like = $this->input->post('like');
+		$result = $this -> glavni_model -> like($komentarID, $korisnikID, $like);
+		$poruka = "";
+		if ($result) {
+			 $poruka = "Uspesno dodat glas";
+		}else {
+			$poruka = "Ne mozete glasati vise puta!";
+		}
+		$data['poruka'] = $poruka;
+		$data['brojKomentara'] = $this->glavni_model->saberiLajkoveZaKomentar($komentarID);
+		echo json_encode($data);
+	}
+	
+	
 }
 
 ?>

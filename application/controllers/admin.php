@@ -3,14 +3,16 @@
 class admin extends CI_Controller {
 
 	public function index (){
-		$this->load->view('admin/admin_index');
+		$data['main_content'] ='admin/admin_index';
+		$this->load->view('admin/includes/admin_template', $data);
 	}
 
 	public function clanci(){
 		$najcitanijiClanci = $this->glavni_model->clanci_po_datumu();
 		// var_dump($najcitanijiClanci);
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
-		$this->load->view('admin/admin_clanci', $data);
+		$data['main_content'] = 'admin/admin_clanci';
+		 $this->load->view('admin/includes/admin_template', $data);
 	}
 
 	public function clanakedit(){
@@ -21,7 +23,8 @@ class admin extends CI_Controller {
 			$article = $this->glavni_model->vratiClanakZaID($id);
 			$data['article'] = $article;
 			$data['kategorije'] = $kat;
-			$this->load->view('admin/admin_clanak_edit', $data);
+			$data['main_content'] = 'admin/admin_clanak_edit';
+			$this->load->view('admin/includes/admin_template', $data);
 		} else {
 			echo "error";
 		}
@@ -32,7 +35,9 @@ class admin extends CI_Controller {
 		$kat = $this->kategorija_model->vratiKategorije();
 		
 		$data['kategorije'] = $kat;
-		$this->load->view('admin/admin_novi_clanak', $data);
+		$data['main_content']= 'admin/admin_novi_clanak';
+		 $this->load->view('admin/includes/admin_template', $data);
+
 		
 	}
 
@@ -56,7 +61,7 @@ class admin extends CI_Controller {
 		$this->kategorija_model->ukloniKategorijeZaClanak($data['id']);
 		$this->kategorija_model->ubaciKategorijeZaClanak($data['id'],$kategorije);
 
-		echo "successfuly edited";
+		echo "Uspešno ste izmenili članak";
 // 		ukloniKategorijeZaClanak($clanakID)
 		// var_dump($data);
 		// var_dump($kategorije);
@@ -82,16 +87,17 @@ class admin extends CI_Controller {
 		$this->glavni_model ->dodaj_clanak($data);
 		 $newId = $this->db->insert_id();
 		 $this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
-		var_dump($data);
-		var_dump($kategorije);
+		 echo "Uspešno ste ubacili članak";
+		// var_dump($data);
+		// var_dump($kategorije);
 	}
 
 	public function obrisi_clanak(){
 		
 		$id = $this->uri->segment(3);
 
-		// $this->glavni_model ->obrisi_clanak($id);
-		var_dump("success");
+		$this->glavni_model ->obrisi_clanak($id);
+		echo "Uspešno ste obrisali članak";
 
 
 	}

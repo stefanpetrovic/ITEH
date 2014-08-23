@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <?php
-$this->load->view('admin/head.php');
+//$this->load->view('admin/head.php');
 ?>
 <body>
   <div id="wrapper">
-    <div class="row">
+    <div class="row"> -->
       <?php
-      $this->load->view('admin/admin_header.php');
+      //$this->load->view('admin/admin_header.php');
       //var_dump($najcitanijiClanci);
       ?>
 
@@ -46,8 +46,7 @@ $this->load->view('admin/head.php');
               <td><a href='<?php echo 'clanakedit?id='.$clanak->clanakID; ?>'>
                 <button type='button' class='btn btn-info'>Edit</button>
               </a></td>
-              <td><a href='<?php echo $clanak->clanakID; ?>'
-                 class='btn btn-danger delete'>Delete
+              <td><a href='<?php echo $clanak->clanakID; ?>' class='btn btn-danger delete'>Delete
               </a></td>
             </tr>
             
@@ -81,23 +80,22 @@ $this->load->view('admin/head.php');
 
 
 
-  </div>
-</div>
+<!--   </div>
+</div> -->
 
 <?php
-$this->load->view('admin/admin_footer.php');
+//$this->load->view('admin/admin_footer.php');
 ?>
 
-<div class="col-md-12" id='dump'>
-</div>
+<!-- <div class="col-md-12" id='dump'>
+</div> -->
 
 <script type="text/javascript">
 
-$('.delete').click(function(){
+$('.btn.delete').click(function(){
 
  var address = $(this).attr('href');
  //var uri = 'admin/obrisi_clanak/'+address;
-
  var form_data = {
    ajax: '1'
  };
@@ -107,7 +105,13 @@ $('.delete').click(function(){
    type: 'POST',
    data: form_data,
    success: function(msg){
-    $('#dump').append(msg);
+    //$('#dump').append(msg);
+    $('#crud_message').append(msg).show();
+   function hide(){
+       $( "#crud_message" ).fadeOut('slow');
+     }
+     setTimeout(hide,3000);
+
     var id = '#cl'+address;
     $(id).remove();
   }
@@ -120,5 +124,5 @@ $('.delete').click(function(){
 
 
 </script>
-</body>
-</html>
+<!-- </body>
+</html> -->

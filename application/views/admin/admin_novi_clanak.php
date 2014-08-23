@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <?php
-$this->load->view('admin/head.php');
+//$this->load->view('admin/head.php');
 ?>
 <body>
   <div id="wrapper">
-    <div class="row">
+    <div class="row"> -->
       <?php
-      $this->load->view('admin/admin_header.php');
+     // $this->load->view('admin/admin_header.php');
 
       //parametar proleđen - niz kategorija u varijabli $kategorije
       ?>
@@ -80,14 +80,14 @@ $this->load->view('admin/head.php');
     </div>  <!-- End of 2nd column -->
 
 
-  </div>
-</div>
+<!--   </div>
+</div> -->
 
 <?php
-$this->load->view('admin/admin_footer.php');
+//$this->load->view('admin/admin_footer.php');
 ?>
-<div class="col-md-12" id='dump'>
-</div>
+<!-- <div class="col-md-12" id='dump'>
+</div> -->
 
 <script type="text/javascript">
 
@@ -115,6 +115,12 @@ $('#submit').click(function(){
    data: form_data,
    success: function(msg){
     $('#dump').append(msg);
+     $('#crud_message').append(msg).show();
+    
+      function hide(){
+     $( "#crud_message" ).fadeOut('slow');
+    }
+    setTimeout(hide,3000);
   }
 });
 
@@ -125,5 +131,5 @@ $('#submit').click(function(){
 
 
 </script>
-</body>
-</html>
+<!-- </body>
+</html> -->

@@ -36,7 +36,7 @@ $this->load->view('admin/head.php');
 
 
 
-            <tr>
+            <tr id='<?php echo 'cl'.$clanak->clanakID;?>'>
               <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
               <td><a href='<?php echo 'clanakedit?id='.$clanak->clanakID; ?>'>
                 <p class='heading'><?php echo $clanak->naslov; ?></p>
@@ -51,20 +51,11 @@ $this->load->view('admin/head.php');
               </a></td>
             </tr>
             
-          <?php endforeach ?>
+      
 
 
               
-           
-
-            <tr>
-              <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
-              <td><a href='#'><p class='heading'><?php echo $clanak->naslov; ?></p></a></td>
-              <td><a href='#'><p class='sm-heading'><?php echo $clanak->username; ?></p></a></td>
-              <td><a href='#'><p class='sm-heading'><?php echo $clanak->datum; ?></p></a></td>
-              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
-              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
-            </tr>
+          
             
  <?php endforeach ?>
               
@@ -117,6 +108,8 @@ $('.delete').click(function(){
    data: form_data,
    success: function(msg){
     $('#dump').append(msg);
+    var id = '#cl'+address;
+    $(id).remove();
   }
 });
 

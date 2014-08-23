@@ -90,13 +90,9 @@ class admin extends CI_Controller {
 		
 		$id = $this->uri->segment(3);
 
-		$this->glavni_model ->obrisi_clanak($id);
+		// $this->glavni_model ->obrisi_clanak($id);
 		var_dump("success");
 
-		 $najcitanijiClanci = $this->glavni_model->clanci_po_datumu();
-		// var_dump($najcitanijiClanci);
-		 $data['najcitanijiClanci'] = $najcitanijiClanci;
-		$this->load->view('admin/admin_clanci', $data);
 
 	}
 }

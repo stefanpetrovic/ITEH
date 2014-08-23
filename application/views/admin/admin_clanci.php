@@ -35,6 +35,7 @@ $this->load->view('admin/head.php');
 
 
 
+
             <tr>
               <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
               <td><a href='<?php echo 'clanakedit?id='.$clanak->clanakID; ?>'>
@@ -52,6 +53,24 @@ $this->load->view('admin/head.php');
             
           <?php endforeach ?>
 
+
+              
+           
+
+            <tr>
+              <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
+              <td><a href='#'><p class='heading'><?php echo $clanak->naslov; ?></p></a></td>
+              <td><a href='#'><p class='sm-heading'><?php echo $clanak->username; ?></p></a></td>
+              <td><a href='#'><p class='sm-heading'><?php echo $clanak->datum; ?></p></a></td>
+              <td><a href='#'><button type='button' class='btn btn-info'>Edit</button></a></td>
+              <td><a href='#'><button type='button' class='btn btn-danger'>Delete</button></a></td>
+            </tr>
+            
+ <?php endforeach ?>
+              
+            
+          </tbody>
+        </table>
 
         </tbody>
       </table>

@@ -92,6 +92,12 @@ class admin extends CI_Controller {
 
 		$this->glavni_model ->obrisi_clanak($id);
 		var_dump("success");
+
+		 $najcitanijiClanci = $this->glavni_model->clanci_po_datumu();
+		// var_dump($najcitanijiClanci);
+		 $data['najcitanijiClanci'] = $najcitanijiClanci;
+		$this->load->view('admin/admin_clanci', $data);
+
 	}
 }
 

@@ -44,7 +44,7 @@ class glavni_model extends CI_model {
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> where('clanakID', $idClanka);
-
+		
 		$query = $this -> db -> get();
 
 		
@@ -234,6 +234,7 @@ class glavni_model extends CI_model {
 		return $suma_lajkova;
 	}
 
+
 	function dodaj_clanak($data){
 
 		//var_dump($data);
@@ -263,6 +264,7 @@ class glavni_model extends CI_model {
 
 
 	}
+
 
 
 	function dodaj_komentar($data) {

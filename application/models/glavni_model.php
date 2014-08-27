@@ -40,15 +40,22 @@ class glavni_model extends CI_model {
 	}
 
 	function vratiClanakZaID($idClanka) {
-		$this -> db -> select('clanakID, datum, dugiTekst, naslov, username, featuredImage, brojPregleda');
+		$this -> db -> select('clanakID, datum,kratakTekst, dugiTekst, naslov, username, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> where('clanakID', $idClanka);
 		
 		$query = $this -> db -> get();
 
+		
+		$kategorije = $this->kategorija_model->vratiKategorijeZaClanak($idClanka);
+		
+
 		if ($query -> num_rows() > 0) {
-			return $data[] = $query -> result();
+
+			$data[] = $query -> result();
+			$data[0]['kategorije'] = $kategorije;
+			return $data;
 		} else {
 			return false;
 		}
@@ -162,7 +169,7 @@ class glavni_model extends CI_model {
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		//$this -> db -> where($whereClause, null, false);
-		$this -> db -> limit(10);
+		$this -> db -> limit(20);
 		// $this -> db -> from('clanak');
 		$this -> db -> order_by("datum", "desc");
 
@@ -239,6 +246,43 @@ class glavni_model extends CI_model {
 		$this->db->set('datum', $date);
 		$this->db->insert('komentar');
 		return true;
+	}
+
+	function dodaj_clanak($data){
+
+		//var_dump($data);
+		$this->db->insert('clanak', $data); 
+		return $this->db->insert_id();;
+
+
+	}
+
+	function izmeni_clanak($data){
+
+		
+		
+		$this->db->where('clanakID', $data['id']);
+		unset($data['id']);
+		$this->db->update('clanak', $data);
+		return;
+
+
+	}
+
+
+	function obrisi_clanak($idClanka){
+
+		$this->db->delete('clanak', array('clanakID' => $idClanka)); 
+		return;
+
+
+	}
+
+
+
+	function dodaj_komentar($data) {
+		$this -> db -> insert('komentar', $data);
+		return;
 	}
 
 	function dodaj_lajk($data) {

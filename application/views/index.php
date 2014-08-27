@@ -1,7 +1,7 @@
 <?php 
 	function vratiMaliClanak($clanak) {
 		echo '<div class="col-md-3" style="height: 200px;">';
-		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">';
+		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: margin-box;">';
 		echo '<div class="col-md-12">';
 		echo '<a href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
 		echo '<div class="row">';
@@ -9,7 +9,7 @@
 		echo '</div>';
 		echo '<div class="row" style="height: 60px;">';
 		echo '<div class="col-md-12" style="color: white; font-weight: 900;">';
-		echo $clanak->naslov;
+		echo substr($clanak->naslov, 0, 14) . '...' ;
 		echo '</div>';
 		echo '</div>';
 		echo '</a>';
@@ -19,7 +19,7 @@
 	}
 	function vratiVelikiClanak($clanak) {
 		echo '<div class="col-md-6" style="height: 200px;">';
-		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">';
+		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: margin-box;">';
 		echo '<div class="col-md-12">';
 		echo '<a href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
 		echo '<div class="row">';
@@ -27,7 +27,7 @@
 		echo '</div>';
 		echo '<div class="row" style="height: 60px;">';
 		echo '<div class="col-md-12" style="color: white; font-weight: 900;">';
-		echo $clanak->naslov;
+		echo substr($clanak->naslov, 0, 28) . '...';
 		echo '</div>';
 		echo '</div>';
 		echo '</a>';
@@ -39,7 +39,7 @@
 
 <div class="row">
 <!-- Leva strana glavno dela: mix feed -->
-	<div class="col-md-7">
+	<div class="col-md-8">
 		
 			
 			<?php 
@@ -58,25 +58,25 @@
 					<!-- Drugi red mix feed-a -->
 					<div class="row">
 						<?php
-							// vratiMaliClanak($mixClanci[3]);
-							// vratiVelikiClanak($mixClanci[4]);
-							// vratiMaliClanak($mixClanci[5]);
+							vratiMaliClanak($mixClanci[3]);
+							vratiVelikiClanak($mixClanci[4]);
+							vratiMaliClanak($mixClanci[5]);
 						?>
 					</div>
 					<!-- Treci red mix feed-a -->
 					<div class="row">
 			 			<?php
-							// vratiMaliClanak($mixClanci[6]);
-							// vratiMaliClanak($mixClanci[7]);
-							// vratiVelikiClanak($mixClanci[8]);
+							vratiMaliClanak($mixClanci[6]);
+							vratiMaliClanak($mixClanci[7]);
+							vratiVelikiClanak($mixClanci[8]);
 						?>
 					</div>
 					<!-- Cetvrti red mix feed-a -->
 					<div class="row">
 			 			<?php 
-							// vratiVelikiClanak($mixClanci[9]);
-							// vratiMaliClanak($mixClanci[10]);
-							// vratiMaliClanak($mixClanci[11]);
+							vratiVelikiClanak($mixClanci[9]);
+							vratiMaliClanak($mixClanci[10]);
+							vratiMaliClanak($mixClanci[11]);
 						?>
 					</div>
 			
@@ -107,7 +107,7 @@
 		</div>
 	</div>
 	<!-- Desna strana glavnog dela: najcitanije vesti -->
-	<div class="col-md-5">
+	<div class="col-md-4">
 	<?php 
 		foreach ($najcitanijiClanci as $clanak) {
 			$length = strlen($clanak->featuredImage);
@@ -140,8 +140,6 @@
 							</div>
 						</div>
 					</div>
-					
-					
 				</div>
 			</div>
 		</div>

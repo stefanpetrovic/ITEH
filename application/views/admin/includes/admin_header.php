@@ -38,7 +38,7 @@ $this->load->view('admin/head.php');
         <a href="<?php echo base_url() . 'admin/clanci';?>">
         Članci
       </a></li>
-      <li><a href="#">
+      <li><a href="<?php echo base_url() . 'admin/kategorije';?>">
        Kategorije
       </a></li>
       <li class><a href="#">

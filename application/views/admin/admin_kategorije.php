@@ -120,6 +120,10 @@
 
 
 <script type="text/javascript">
+function loadScript () {
+
+
+
 var edit;
 //pojavljivanje modala za edit
 $('.editer').click(function(){
@@ -195,7 +199,7 @@ $('#nova_kategorija').click(function(){
 
 
     
-   var tr = $(document.createElement('tr'));
+   var tr = $(document.createElement('tr')).attr("id","cl"+msg);
 
    var td1 = $(document.createElement('td')).append(
     $('<p />')
@@ -235,15 +239,17 @@ $('#nova_kategorija').click(function(){
 var td4= $(document.createElement('td')).append(
       $('<a />')
       .attr("href", msg)
-      .append($('<button />')
               .addClass("btn btn-danger delete")
-              .text("Delete")));
+              .text("Delete"));
       tr.append(td4);
 
   $('#clnew').before(tr);
 
 
+
+loadScript();
   }
+
 });
 
  return false;
@@ -263,7 +269,7 @@ var td4= $(document.createElement('td')).append(
 
 //brisanje
 
-$('.btn.delete').click(function(){
+$('.delete').click(function(){
 
  var address = $(this).attr('href');
  //var uri = 'admin/obrisi_clanak/'+address;
@@ -285,6 +291,7 @@ $('.btn.delete').click(function(){
      setTimeout(hide,3000);
 
     var id = '#cl'+address;
+    alert(id);
     $(id).remove();
   }
 });
@@ -294,5 +301,8 @@ $('.btn.delete').click(function(){
 
 });
 
+} //end of laodScript function
+
+loadScript();
 
 </script>

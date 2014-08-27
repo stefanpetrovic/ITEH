@@ -13,7 +13,7 @@
 			// var_dump($povezaniClanci);
 	?>
 	<!-- Kolona za sliku autora i + - -->
-	<div class="col-md-2" style="height: 200px;padding-top: 50px;">
+	<!-- <div class="col-md-2" style="height: 200px;padding-top: 50px;">
 
 		<img class="center-block" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
 		<p class="text-center"><?php echo $clanak -> username; ?></p>
@@ -24,11 +24,13 @@
 			<button type="button" class="btn btn-link" id="plus" style="font-size: 20px">+</button>
 			<button type="button" class="btn btn-link" id="minus" style="font-size: 20px">-</button>
 		</p>
-	</div>
+	</div> -->
 	<!-- Kolona za clanak -->
-	<div class="col-md-7">
+	<div class="col-md-8">
 		<div class="page-header">
 			<h1><?php echo $clanak -> naslov; ?></h1>
+			<p><a class="naslov" href="<?php echo base_url() . 'site/vestiPoAutoru/' . $clanak -> autorID . '/0';?>"><?php echo $clanak->username;?></a></p>
+			<p style="font-size: 12px;"><?php echo $clanak->datum;?></p>
 		</div>
 		<img src="<?php echo base_url() . $clanak -> featuredImage; ?>" class="center-block img-responsive"/>
 		<!-- Sadrzaj clanka -->
@@ -50,6 +52,7 @@
 			<p>Komentari</p> <br/>
 			<ul class="media-list">
 				<?php 
+					if ($komentari) {
 					$i = 0;
 					foreach($komentari as $komentar) {
 						if ($i < 5) {
@@ -111,6 +114,9 @@
 				<?php
 						
 					}
+				}else {
+					echo 'Nema komentara';
+				}
 				?>
 					</ul>
 				
@@ -118,34 +124,43 @@
 		</div>
 	</div>
 	<!-- Kolona za suggested vesti -->
-	<div class="col-md-3" style="height: 200px;">
+	<div class="col-md-4" style="height: 200px;">
 	<?php 
 		foreach($povezaniClanci as $clanak) {
+			$length = strlen($clanak->featuredImage);
+			$dotPosition = strrpos($clanak->featuredImage, '.');
+			$image = base_url() . substr($clanak->featuredImage, 0, $dotPosition) . '2' . substr($clanak->featuredImage, $dotPosition);
 	?>
 		<div class="row">
-			<div class="col-md-12" style="height: 220px;">
-				<a href="#"><div class="row" style="background-image: url('<?php echo base_url().$clanak->featuredImage?>'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">
-					<div class="col-md-12" style="height: 180px;"></div>
+			<div class="col-md-12 sidenews"  style="height: 220px; background-image: url('<?php echo $image;?>'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">
+				
+				<div class="row" >
+						<div class="col-md-12" style="height: 160px;"></div>
 				</div>
-				<div class="row" style="height: 40px; background-color: #E4DCDC;">
-					<div class="col-md-8" style="color: red;">
-					<?php echo $clanak->naslov; ?>
+				<div class="row naslovPozadina" style="height: 60px;">
+					<div class="col-md-8 naslov">
+						<p style="padding: 5px;">
+							<a class="naslov"href="<?php echo base_url() . 'site/vest/' . $clanak->clanakID;?>">
+								<?php echo $clanak->naslov; ?>
+							</a>
+						</p>
 					</div>
-					<div class="col-md-4">
+				    
+					<div class="col-md-3 col-md-offset-1">
 						<div class="row">
-							<div class="col-md-12" style="font-size: 12px;">
-								<?php echo $clanak->username; ?>
+							<div class="col-md-12" style="font-size: 12px; font-weight: 800; color: black;">
+								<a class="autor" href="<?php echo base_url() . 'site/vestiPoAutoru/' . $clanak -> autorID . '/0';?>">
+									<?php echo $clanak->username; ?>
+								</a>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12" style="font-size: 12px;">
+							<div class="col-md-12" style="font-size: 12px; font-weight: 800; color: black;">
 								<?php echo $clanak->brojPregleda; ?>
 							</div>
 						</div>
 					</div>
-					
-					
-				</div> </a>
+				</div>
 			</div>
 		</div>
 	<?php

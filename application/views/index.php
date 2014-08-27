@@ -1,40 +1,88 @@
 <?php 
 	function vratiMaliClanak($clanak) {
-		echo '<div class="col-md-3" style="height: 200px;">';
-		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: margin-box;">';
-		echo '<div class="col-md-12">';
-		echo '<a href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
+		echo '<div class="col-md-3">';
+		echo '<div class="row">';
+		echo '<div class="col-md-12"  style="height: 200px; background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">';
 		echo '<div class="row">';
 		echo '<div class="col-md-12" style="height: 140px;"></div>';
 		echo '</div>';
-		echo '<div class="row" style="height: 60px;">';
-		echo '<div class="col-md-12" style="color: white; font-weight: 900;">';
-		echo substr($clanak->naslov, 0, 14) . '...' ;
-		echo '</div>';
-		echo '</div>';
+		echo '<div class="row naslovPozadina" style="height: 60px;">';
+		echo '<div class="col-md-12 naslov">';
+		echo '<p>';
+		echo '<a class="naslov" href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
+		echo substr($clanak->naslov, 0, 100) . '...';
 		echo '</a>';
+		echo '</p>';
+		echo '</div>';
+		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 	}
 	function vratiVelikiClanak($clanak) {
-		echo '<div class="col-md-6" style="height: 200px;">';
-		echo '<div class="row" style="background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: margin-box;">';
-		echo '<div class="col-md-12">';
-		echo '<a href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
+		echo '<div class="col-md-6">';
 		echo '<div class="row">';
+		echo '<div class="col-md-12 kockaPozadina" style="background-image: url(' . base_url() . $clanak->featuredImage . ');">';
+		echo '<div class="row" >';
 		echo '<div class="col-md-12" style="height: 140px;"></div>';
 		echo '</div>';
-		echo '<div class="row" style="height: 60px;">';
-		echo '<div class="col-md-12" style="color: white; font-weight: 900;">';
-		echo substr($clanak->naslov, 0, 28) . '...';
-		echo '</div>';
-		echo '</div>';
+		echo '<div class="row naslovPozadina" style="height: 60px;">';
+		echo '<div class="col-md-12 ">';
+		echo '<p>';
+		echo '<a class="naslov" href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
+		echo substr($clanak->naslov, 0, 80) . '...';
 		echo '</a>';
+		echo '</p>';
+		echo '</div>';
+		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 		echo '</div>';
 	}
+	function vratiPrviRed($clanci) {
+		if (count($clanci) > 0) {
+			vratiVelikiClanak($clanci[0]);
+		}
+		if (count($clanci) > 1) {
+			vratiMaliClanak($clanci[1]);
+		}
+		if (count($clanci) > 2) {
+			vratiMaliClanak($clanci[2]);
+		}
+	}
+	function vratiDrugiRed($clanci) {
+		if (count($clanci) > 3) {
+			vratiMaliClanak($clanci[3]);
+		}
+		if (count($clanci) > 4) {
+			vratiVelikiClanak($clanci[4]);
+		}
+		if (count($clanci) > 5) {
+			vratiMaliClanak($clanci[5]);
+		}
+	}
+	function vratiTreciRed($clanci) {
+		if (count($clanci) > 6) {
+			vratiMaliClanak($clanci[6]);
+		}
+		if (count($clanci) > 7) {
+			vratiMaliClanak($clanci[7]);
+		}
+		if (count($clanci) > 8) {
+			vratiVelikiClanak($clanci[8]);
+		}
+	}
+	function vratiCetvrtiRed($clanci) {
+		if (count($clanci) > 9) {
+			vratiVelikiClanak($clanci[9]);
+		}
+		if (count($clanci) > 10) {
+			vratiMaliClanak($clanci[10]);
+		}
+		if (count($clanci) > 11) {
+			vratiMaliClanak($clanci[11]);
+		}
+	}	
 ?>
 
 <div class="row">
@@ -48,9 +96,7 @@
 					<!-- Prvi red mix feed-a -->
 					<div class="row">
 						<?php 
-							vratiVelikiClanak($mixClanci[0]);
-							vratiMaliClanak($mixClanci[1]);
-							vratiMaliClanak($mixClanci[2]);
+							vratiPrviRed($mixClanci);
 						?>
 					</div>
 			
@@ -58,32 +104,26 @@
 					<!-- Drugi red mix feed-a -->
 					<div class="row">
 						<?php
-							vratiMaliClanak($mixClanci[3]);
-							vratiVelikiClanak($mixClanci[4]);
-							vratiMaliClanak($mixClanci[5]);
+							vratiDrugiRed($mixClanci);
 						?>
 					</div>
 					<!-- Treci red mix feed-a -->
 					<div class="row">
 			 			<?php
-							vratiMaliClanak($mixClanci[6]);
-							vratiMaliClanak($mixClanci[7]);
-							vratiVelikiClanak($mixClanci[8]);
+							vratiTreciRed($mixClanci);
 						?>
 					</div>
 					<!-- Cetvrti red mix feed-a -->
 					<div class="row">
 			 			<?php 
-							vratiVelikiClanak($mixClanci[9]);
-							vratiMaliClanak($mixClanci[10]);
-							vratiMaliClanak($mixClanci[11]);
+							vratiCetvrtiRed($mixClanci);
 						?>
 					</div>
 			
 			
 			<?php
 				}else {
-					echo "Problem sa ucitavanje clanaka";
+					echo "Nema clanaka";
 				}
 			?>
 			
@@ -96,12 +136,12 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-1">
 				<ul class="pagination pagination-lg">
-					<li><a href="#">&laquo;</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">&raquo;</a></li>
+					<li><a href="<?php $page = $this->uri->segment(3); if ($page > 0) $page -= 1; else $page = 0; echo $page; ?>">&laquo;</a></li>
+					<li><a href="<?php echo base_url() . 'site/index';?>">1</a></li>
+					<li><a href="<?php echo base_url() . 'site/index/1';?>">2</a></li>
+					<li><a href="<?php echo base_url() . 'site/index/2';?>">3</a></li>
+					<li><a href="<?php echo base_url() . 'site/index/3';?>">4</a></li>
+					<li><a href="<?php $page = $this->uri->segment(3); if ($page < 3) $page += 1; else $page = 3; echo $page; ?>">&raquo;</a></li>
 				</ul>
 			</div>
 		</div>
@@ -115,23 +155,26 @@
 			$image = base_url() . substr($clanak->featuredImage, 0, $dotPosition) . '2' . substr($clanak->featuredImage, $dotPosition);
 	?>
 		<div class="row">
-			<div class="col-md-12"  style="height: 220px; background-image: url('<?php echo $image;?>'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">
+			<div class="col-md-12 sidenews"  style="height: 220px; background-image: url('<?php echo $image;?>'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">
 				
 				<div class="row" >
-						<div class="col-md-12" style="height: 180px;"></div>
+						<div class="col-md-12" style="height: 160px;"></div>
 				</div>
-				<div class="row" style="height: 40px; background-color: #E4DCDC; color:#fff; opacity:0.5;">
-					<a href="<?php echo base_url() . 'site/vest/' . $clanak->clanakID;?>">
-						<div class="col-md-8" style="color: black; font-size: 15px; font-weight: 900;">
-							<p style="padding: 5px;">
+				<div class="row naslovPozadina" style="height: 60px;">
+					<div class="col-md-8 naslov">
+						<p style="padding: 5px;">
+							<a class="naslov"href="<?php echo base_url() . 'site/vest/' . $clanak->clanakID;?>">
 								<?php echo $clanak->naslov; ?>
-							</p>
-						</div>
-				    </a>
-					<div class="col-md-4">
+							</a>
+						</p>
+					</div>
+				    
+					<div class="col-md-3 col-md-offset-1">
 						<div class="row">
 							<div class="col-md-12" style="font-size: 12px; font-weight: 800; color: black;">
-								<?php echo $clanak->autorID; ?>
+								<a class="autor" href="<?php echo base_url() . 'site/vestiPoAutoru/' . $clanak -> korisnikID . '/0';?>">
+									<?php echo $clanak->username; ?>
+								</a>
 							</div>
 						</div>
 						<div class="row">
@@ -143,6 +186,7 @@
 				</div>
 			</div>
 		</div>
+		
 	<?php
 		}
 	?>

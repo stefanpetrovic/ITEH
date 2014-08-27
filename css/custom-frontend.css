@@ -1,0 +1,55 @@
+.naslov {
+	overflow: hidden;
+	padding-left: 12px;
+	padding-bottom: 20px;
+	color: black;
+	font-size: 14px;
+	font-weight: 900;
+	line-height: 120%;
+	text-overflow: ellipsis;
+	word-break: break-all;
+}
+p.naslov {
+	height: 50px;
+}
+a.naslov {
+	overflow: hidden;
+	
+	color: black;
+	font-size: 14px;
+	font-weight: 900;
+	line-height: 120%;
+	text-overflow: ellipsis;
+	word-break: break-all;
+}
+.autor {
+	color: black;
+	font-size: 12px;
+	font-weight: 800;
+}
+.naslov:hover, .autor:hover{
+	color: black;
+}
+.naslovPozadina {
+	background-color: #E4DCDC;
+	color:#fff;
+	opacity:0.65;
+}
+.col-md-6, .col-md-3, .col-md-7{
+	overflow: hidden;
+	padding: 3px;
+}
+.row {
+	margin-left: -12px;
+	margin-right: -12px;
+}
+
+.sidenews {
+	padding: 3px;
+}
+
+.kockaPozadina {
+	height: 200px;
+	background-repeat: no-repeat; background-size: 100% 100%;
+	background-origin: content-box;"
+}

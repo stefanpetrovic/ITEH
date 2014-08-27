@@ -20,13 +20,14 @@ class glavni_model extends CI_model {
 		}
 	}
 
-	function clanci_za_kat($naziv) {
-		$this -> db -> select('clanak.clanakID as clanakID, datum, kratakTekst, dugiTekst, naslov, autorID, featuredImage, brojPregleda');
+	function clanci_za_kat($naziv, $offset) {
+		$this -> db -> select('clanak.clanakID as clanakID, datum, kratakTekst, dugiTekst, naslov, autorID, korisnikID, username,  featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('clanakkategorija', 'clanak.clanakID = clanakkategorija.clanakID');
+		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> join('kategorija', 'clanakkategorija.kategorijaID = kategorija.kategorijaID');
 		$this -> db -> where('kategorija.naziv', $naziv);
-
+		$this -> db -> limit(10, $offset * 10);
 		$query = $this -> db -> get();
 
 		if ($query -> num_rows() > 0) {
@@ -40,7 +41,7 @@ class glavni_model extends CI_model {
 	}
 
 	function vratiClanakZaID($idClanka) {
-		$this -> db -> select('clanakID, datum,kratakTekst, dugiTekst, naslov, username, featuredImage, brojPregleda');
+		$this -> db -> select('clanakID, datum,kratakTekst, dugiTekst, naslov, username, autorID, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> where('clanakID', $idClanka);
@@ -100,7 +101,7 @@ class glavni_model extends CI_model {
 			}
 			
 
-			$this -> db -> select('clanak.clanakID as clanakID, naslov, username, featuredImage, brojPregleda');
+			$this -> db -> select('clanak.clanakID as clanakID, naslov, username, autorID, featuredImage, brojPregleda');
 			$this -> db -> from('clanak');
 			$this -> db -> join('clanakkategorija', 'clanak.clanakID = clanakkategorija.clanakID');
 			$this -> db -> join('kategorija', 'clanakkategorija.kategorijaID = kategorija.kategorijaID');
@@ -125,7 +126,9 @@ class glavni_model extends CI_model {
 	}
 
 	function pet_najcitanijih() {
+		$this -> db -> select('clanakID, naslov, korisnikID, username, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
+		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> order_by("brojPregleda", "desc");
 
 		$query = $this -> db -> get();
@@ -162,6 +165,24 @@ class glavni_model extends CI_model {
 			return false;
 		}
 	}
+	
+	function najnovijiClanciZaMix($limit, $offset) {
+		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');	
+		$this -> db -> from('clanak');
+		$this -> db -> limit($limit, $offset);
+		$this -> db -> order_by("datum", "desc");
+		
+		$query = $this -> db -> get();
+
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		} else {
+			return false;
+		}
+	}
 
 	function clanci_po_datumu() {
 
@@ -184,6 +205,36 @@ class glavni_model extends CI_model {
 			return false;
 		}
 
+	}
+
+	function clanciPoAutoru($autorID, $offset) {
+		$this -> db -> select('clanakID, datum, kratakTekst, naslov, username, korisnikID, featuredImage, brojPregleda');
+		$this -> db -> from('clanak');
+		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
+		$this -> db -> where('autorID', $autorID);
+		$this -> db -> limit(10, $offset * 10);
+		$query = $this -> db -> get();
+
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		} else {
+			return false;
+		}
+	}
+
+	function kategorije() {
+		$query = $this -> db -> get('kategorija', 10, 2);
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		} else {
+			return false;
+		}
 	}
 	
 	function like($komentarID, $korisnikID, $like) {
@@ -276,13 +327,6 @@ class glavni_model extends CI_model {
 		return;
 
 
-	}
-
-
-
-	function dodaj_komentar($data) {
-		$this -> db -> insert('komentar', $data);
-		return;
 	}
 
 	function dodaj_lajk($data) {

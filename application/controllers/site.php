@@ -6,7 +6,7 @@ class Site extends CI_Controller {
 		$najcitanijiClanci = $this->glavni_model->pet_najcitanijih();
 		$data['main_content'] = 'index';
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
-		$data['mixClanci'] = $this->glavni_model->najsvezijiClanci();
+		$data['mixClanci'] = $this->glavni_model->najnovijiClanciZaMix(12, $this->uri->segment(3) * 10);
  		$this->load->view('includes/template', $data);
 	}
 	public function registracija() {
@@ -27,12 +27,17 @@ class Site extends CI_Controller {
 		$this->load->view('includes/template', $data);	
 	}
 
-	public function vestiPoKategoriji($nazivKategorije){
-		$data['clanci'] = $this->glavni_model->clanci_za_kat($nazivKategorije);
+	public function vestiPoKategoriji($nazivKategorije, $offset){
+		$data['clanci'] = $this->glavni_model->clanci_za_kat($nazivKategorije, $offset);
 		$data['main_content'] = "vestiPoKategoriji";
 		$this->load->view('includes/template', $data);	
 	}
 	
+	public function vestiPoAutoru($autorID, $offset) {
+		$data['clanci'] = $this->glavni_model->clanciPoAutoru($autorID, $offset);
+		$data['main_content'] = "vestiPoKategoriji";
+		$this->load->view('includes/template', $data);
+	}
 	public function lajk() {
 		$komentarID = $this->input->post('komentarID');
 		$korisnikID = $this->input->post('korisnikID');
@@ -49,6 +54,16 @@ class Site extends CI_Controller {
 		echo json_encode($data);
 	}
 	
+	public function ostaviKomentar() {
+		$sadrzajKomentara = $this->input->post('komentarID');
+		$korisnikID = $this->input->post('korisnikID');
+		$clanakID = $this->input->post('clanakID');
+		if ($this->glavni_model->dodaj_komentar($sadrzajKomentara, $korisnikID, $clanakID)) {
+			echo "Uspesno ste poslali komentar";
+		}else {
+			echo "Komentar nije uspesno poslat";
+		}
+	}
 	
 }
 

@@ -9,6 +9,7 @@
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url();?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url();?>css/custom-frontend.css" rel="stylesheet">
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -37,8 +38,8 @@
         <div class="col-md-10 col-md-offset-1" style="height: 40px; padding: 10px;">
           <ul class="nav nav-pills" role="tablist">
             <li class="active"><a href="<?php echo base_url().'site/index';?>">Naslovna</a></li>
-            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal';?>">Fudbal</a></li>
-            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/kosarka';?>">Kosarka</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal/0';?>">Fudbal</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/kosarka/0';?>">Kosarka</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 Ostali sportovi <span class="caret"></span>

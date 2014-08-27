@@ -116,11 +116,10 @@ $('#submit').click(function(){
    success: function(msg){
     $('#dump').append(msg);
      $('#crud_message').append(msg).show();
-    
-      function hide(){
-     $( "#crud_message" ).fadeOut('slow');
-    }
-    setTimeout(hide,3000);
+     function hide(){
+       $( "#crud_message" ).fadeOut('slow');
+     }
+     setTimeout(hide,3000);
   }
 });
 

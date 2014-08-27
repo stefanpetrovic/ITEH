@@ -168,7 +168,7 @@ class glavni_model extends CI_model {
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		//$this -> db -> where($whereClause, null, false);
-		$this -> db -> limit(10);
+		$this -> db -> limit(20);
 		// $this -> db -> from('clanak');
 		$this -> db -> order_by("datum", "desc");
 

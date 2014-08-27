@@ -56,7 +56,7 @@
 
     <!-- 3rd column -->
   <div class="col-md-9 main-col" id="news-one">
-    <h1 style="margin-top: 100px;">Welcome to sports!</h1>
+    <h1 class="col-md-offset-3" style="margin-top: 100px;">Welcome to sports!</h1>
   </div>  <!-- End of 3rd column -->
 
 

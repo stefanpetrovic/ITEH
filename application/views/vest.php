@@ -1,8 +1,16 @@
 <!-- Container za sadrzaj glavno dela strane -->
 <div class="row">
+
 	<?php 
+	
 		if ($clanak) {
-			$clanak = $clanak[0];
+			
+			$clanak = $clanak[0][0];
+			//$clanak = $clanak[0];
+			
+			//var_dump($clanak[0]);
+			// var_dump($komentari);
+			// var_dump($povezaniClanci);
 	?>
 	<!-- Kolona za sliku autora i + - -->
 	<div class="col-md-2" style="height: 200px;padding-top: 50px;">

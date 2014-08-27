@@ -6,7 +6,7 @@
   	</div class="row" style="height: 50px;">
   		<div class="col-md-3"></div>
   		<div class="col-md-6">
-  			<p style="text-align: center;">MPS Systems Ltd.®</p>
+  			<p style="text-align: center;">Stef, Marko & Petar ®</p>
   		</div>
   		<div class="col-md-3"></div>
   	</div>

@@ -104,6 +104,7 @@ $('.btn.delete').click(function(){
    url: "<?php echo site_url('admin/obrisi_clanak/"+address+"'); ?>",
    type: 'POST',
    data: form_data,
+   async: false,
    success: function(msg){
     //$('#dump').append(msg);
     $('#crud_message').append(msg).show();

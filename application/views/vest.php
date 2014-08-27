@@ -31,11 +31,9 @@
 		<!-- Forma za unos komentara na clanak-->
 		
 		<div style="padding: 10px;">
-			<form class="form-horizontal" role="form" action="ostaviKomentar/">
-				<textarea class="form-control" rows="3">Ostavite komentar...</textarea>
-			</form>
+			<textarea class="form-control" rows="3" id="sadrzajKomentara">Ostavite komentar...</textarea>
 			<br/>
-			<button class="submit" class="btn btn-default">Ostavi komentar</button>
+				<button class="button" class="btn btn-default" onclick="ostaviKomentar();">Ostavi komentar</button>
 			<br />
 		</div>
 
@@ -170,6 +168,23 @@
 				}
 			});
 			return false;
+		}
+		
+		function ostaviKomentar() {
+			var podaci = {
+				sadrzajKomentara : $('#sadrzajKomentara').html(),
+				korisnikID: '3', 
+				clanakID: '<?php echo $clanak->clanakID; ?>'
+			};
+			$.ajax({
+				url: "<?php echo site_url('site/ostaviKomentar')?>",
+				type: 'POST',
+				data: podaci,
+				success: function(msg) {
+					alert(msg);
+					$('#sadrzajKomentara').val("");
+				}
+			});
 		}
 		
 	</script>

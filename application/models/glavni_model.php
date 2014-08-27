@@ -59,6 +59,7 @@ class glavni_model extends CI_model {
 		$this -> db -> from('komentar');
 		$this -> db -> join('korisnik', 'komentar.userID = korisnik.korisnikID');
 		$this -> db -> where('clanakID', $idClanka);
+		$this -> db -> where('odabran >', 0);
 		$this -> db -> order_by('skor', 'desc');
 
 		$query = $this -> db -> get();
@@ -227,9 +228,17 @@ class glavni_model extends CI_model {
 		return $suma_lajkova;
 	}
 
-	function dodaj_komentar($data) {
-		$this -> db -> insert('komentar', $data);
-		return;
+	function dodaj_komentar($sadrzajKomentara, $korisnikID, $clanakID) {
+		$date = date('Y-m-d H:i:s');
+		$this->db->set('userID', $korisnikID);
+		$this->db->set('tekst', $sadrzajKomentara);
+		$this->db->set('likes', 0);
+		$this->db->set('dislikes', 0);
+		$this->db->set('clanakID', $clanakID);
+		$this->db->set('odabran', 0);
+		$this->db->set('datum', $date);
+		$this->db->insert('komentar');
+		return true;
 	}
 
 	function dodaj_lajk($data) {

@@ -101,6 +101,56 @@ class admin extends CI_Controller {
 
 
 	}
+
+
+		public function kategorije(){
+		$kategorije = $this->kategorija_model->vratiKategorije();
+		
+		$data['kategorije'] = $kategorije;
+		//var_dump($data);
+		 $data['main_content'] = 'admin/admin_kategorije';
+		 $this->load->view('admin/includes/admin_template', $data);
+	}
+
+
+	public function obrisi_kategoriju(){
+		
+		$id = $this->uri->segment(3);
+
+		$this->kategorija_model  ->obrisi_kategoriju($id);
+		echo "Uspešno ste obrisali kategoriju";
+
+
+	}
+
+	public function izmeni_kategoriju(){
+
+		$data = array(
+			'id' => $this->input->post('id'),
+			'naziv'			=>  $this->input->post('naziv'),
+			);
+		$this->kategorija_model -> izmeni_kategoriju($data);
+		echo "Uspešno ste izmenili kategoriju";
+	}
+
+	public function dodaj_kategoriju(){
+		$data = array(
+			'naziv'			=>  $this->input->post('naziv'),
+			);
+
+
+		
+		
+		 $this->kategorija_model->ubaci_novu_kategoriju($data);
+		 $newId = $this->db->insert_id();
+		 echo $newId;
+
+
+
+
+		// var_dump($data);
+		// var_dump($kategorije);
+	}
 }
 
 ?>

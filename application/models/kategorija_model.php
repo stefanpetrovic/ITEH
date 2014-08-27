@@ -55,14 +55,28 @@ class kategorija_model extends CI_model {
 		}
 		return;
 
-
-
-
-
-
 	}
 
-	
+	function izmeni_kategoriju($data){
+		$this->db->where('kategorijaID', $data['id']);
+		unset($data['id']);
+		$this->db->update('kategorija', $data);
+		return;
+	}
+
+	function ubaci_novu_kategoriju($data){
+			$this->db->insert('kategorija', $data); 
+		return $this->db->insert_id();
+	}
+
+	function obrisi_kategoriju($idKategorije){
+		$this->db->delete('kategorija', array('kategorijaID' => $idKategorije)); 
+		return;
+
+		// $this->db->delete('clanak', array('clanakID' => $idClanka)); 
+		// return;
+	}
+
 
 }
 

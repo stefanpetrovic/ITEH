@@ -303,7 +303,7 @@ class glavni_model extends CI_model {
 
 		//var_dump($data);
 		$this->db->insert('clanak', $data); 
-		return $this->db->insert_id();;
+		return $this->db->insert_id();
 
 
 	}

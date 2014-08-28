@@ -18,6 +18,7 @@ class Site extends CI_Controller {
 		if ($this -> korisnik['ulogovan'] == true) {
 			$this -> korisnik['username'] = $this -> session -> userdata('username');
 			$this -> korisnik['nivoPrivilegija'] = $this -> session -> userdata('nivoPriv');
+			$this -> korisnik['idKorisnika'] = $this -> session -> userdata('idKorisnika');
 		}
 	}
 
@@ -45,7 +46,22 @@ class Site extends CI_Controller {
 		$this -> load -> view('includes/template', $data);
 	}
 
+	public function proveriUsername() {
+		$username = $this->input->post('username');
+		$postoji = $this->glavni_model->proveriUsername($username);
+		if ($postoji) {
+			echo true;
+		}
+		echo false;
+	}
+
+	public function dodajPregled($idVesti, $ipAdresa) {
+		
+	}
+
 	public function vest($idVesti) {
+		$ipAdresa = $_SERVER['REMOTE_ADDR'];
+		$this->glavni_model->dodajPregled($idVesti, $ipAdresa);
 		$data['menu_items'] = $this -> menu_items;
 		$data['korisnik'] = $this -> korisnik;
 		$data['clanak'] = $this -> glavni_model -> vratiClanakZaID($idVesti);
@@ -88,7 +104,7 @@ class Site extends CI_Controller {
 	}
 
 	public function ostaviKomentar() {
-		$sadrzajKomentara = $this -> input -> post('komentarID');
+		$sadrzajKomentara = $this -> input -> post('sadrzajKomentara');
 		$korisnikID = $this -> input -> post('korisnikID');
 		$clanakID = $this -> input -> post('clanakID');
 		if ($this -> glavni_model -> dodaj_komentar($sadrzajKomentara, $korisnikID, $clanakID)) {

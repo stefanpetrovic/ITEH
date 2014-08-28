@@ -27,12 +27,21 @@ class glavni_model extends CI_model {
 		$query = $this -> db -> get('korisnik');
 
 		if ($query -> num_rows == 1) {
-			foreach ($query->result() as $row) {
-				return $row -> nivoPrivilegija;
-			}
-			return $data;
+			$rows = $query->result();
+			return $rows[0];
 		} else {
-			return 3;
+			return false;
+		}
+	}
+	
+	function proveriUsername($username) {
+		$this->db->from('korisnik');
+		$this->db->where('username', $username);
+		$query = $this->db->get();
+		if($query -> num_rows() == 0) {
+			return true;
+		}else {
+			return false;
 		}
 	}
 
@@ -312,6 +321,36 @@ class glavni_model extends CI_model {
 		return true;
 	}
 
+	function dodajPregled($idVesti, $ipAdresa) {
+		$date = date('Y-m-d', strtotime("-1 day"));
+		$this->db->from('brojPregleda');
+		$array = array('clanakID =' => $idVesti, 'ipAdresa =' => $ipAdresa, 'datum >=' => $date);
+		$this->db->where($array);
+		$this->db->order_by('datum', 'desc');
+		
+		$query = $this->db->get();
+		if ($query -> num_rows() == 0) {
+			$data = array(
+				'clanakID' => $idVesti,
+				'ipAdresa' => $ipAdresa,
+				'datum' => date('Y-m-d')
+			);
+			$this->db->insert('brojPregleda', $data);
+			$this->db->select('brojPregleda');
+			$this->db->from('clanak');
+			$this->db->where('clanakID', $idVesti);
+			$query = $this->db->get();
+			$rows = $query->result();
+			$row = $rows[0];
+			$brojPregleda = $row->brojPregleda + 1;
+			
+			$this->db->set('brojPregleda', $brojPregleda);
+			$this->db->where('clanakID', $idVesti);
+			$this->db->update('clanak');
+			return true;
+		}
+		return false;
+	}
 	function dodaj_clanak($data) {
 
 		//var_dump($data);

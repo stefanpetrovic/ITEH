@@ -35,7 +35,7 @@
       </div>
       <!-- Menu -->
       <div class="row" style="height: 60px;">
-        <div class="col-md-5 col-md-offset-1" style="height: 40px; padding: 10px;">
+        <div class="col-md-6 col-md-offset-1" style="height: 50px; padding: 10px;">
           <ul class="nav nav-pills" role="tablist">
             <li class="active"><a href="<?php echo base_url().'site/index';?>">Naslovna</a></li>
             <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal/0';?>">Fudbal</a></li>
@@ -59,7 +59,7 @@
             <li><a href="#">Najcitanije</a></li>
           </ul>
         </div>
-        <div class="col-md-4 col-md-offset-1" style="padding-top: 15px;">
+        <div class="col-md-4 col-md-offset-1" style="padding-top: 20px;">
         	<p>
         		<?php 
         			if ($korisnik['ulogovan']) {

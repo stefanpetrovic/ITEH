@@ -12,7 +12,7 @@ class admin extends CI_Controller {
 		// var_dump($najcitanijiClanci);
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
 		$data['main_content'] = 'admin/admin_clanci';
-		 $this->load->view('admin/includes/admin_template', $data);
+		$this->load->view('admin/includes/admin_template', $data);
 	}
 
 	public function clanakedit(){
@@ -36,7 +36,7 @@ class admin extends CI_Controller {
 		
 		$data['kategorije'] = $kat;
 		$data['main_content']= 'admin/admin_novi_clanak';
-		 $this->load->view('admin/includes/admin_template', $data);
+		$this->load->view('admin/includes/admin_template', $data);
 
 		
 	}
@@ -85,9 +85,9 @@ class admin extends CI_Controller {
 		$kategorije = $this->input->post('kategorije');
 
 		$this->glavni_model ->dodaj_clanak($data);
-		 $newId = $this->db->insert_id();
-		 $this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
-		 echo "Uspešno ste ubacili članak";
+		$newId = $this->db->insert_id();
+		$this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
+		echo "Uspešno ste ubacili članak";
 		// var_dump($data);
 		// var_dump($kategorije);
 	}
@@ -103,13 +103,15 @@ class admin extends CI_Controller {
 	}
 
 
-		public function kategorije(){
+	public function kategorije(){
+
+
 		$kategorije = $this->kategorija_model->vratiKategorije();
 		
 		$data['kategorije'] = $kategorije;
 		//var_dump($data);
-		 $data['main_content'] = 'admin/admin_kategorije';
-		 $this->load->view('admin/includes/admin_template', $data);
+		$data['main_content'] = 'admin/admin_kategorije';
+		$this->load->view('admin/includes/admin_template', $data);
 	}
 
 
@@ -135,22 +137,123 @@ class admin extends CI_Controller {
 
 	public function dodaj_kategoriju(){
 		$data = array(
-			'naziv'			=>  $this->input->post('naziv'),
+			'naziv'			=>  $this->input->post('name'),
 			);
-
-
-		
-		
-		 $this->kategorija_model->ubaci_novu_kategoriju($data);
-		 $newId = $this->db->insert_id();
-		 echo $newId;
-
-
+		$this->kategorija_model->ubaci_novu_kategoriju($data);
+		$newId = $this->db->insert_id();
+		 //echo $newId;
+		redirect(base_url().'admin/kategorije');
+		//var_dump($data);
 
 
 		// var_dump($data);
 		// var_dump($kategorije);
 	}
+
+
+
+	public function komentari(){
+		$sort = $this->input->get('sort');
+
+		//put sort type in session
+		$session_data = $this->session->userdata('verified');
+		
+		if($session_data['sortKom']== "descending"){
+			$session_data['sortKom'] = "ascending";
+		} else {
+			$session_data['sortKom'] = "descending";
+		}
+		$this->session->set_userdata("verified", $session_data);
+		$sortType = $session_data['sortKom'];
+		$komentari = $this->komentar_model->vrati_komentare($sort, $sortType);
+		$data['komentari'] = $komentari;
+		$data['main_content'] = 'admin/admin_komentari';
+
+		//$data['sortType']=$sortType;
+		$this->load->view('admin/includes/admin_template', $data);
+	}
+
+	public function odobrikomentar($id){
+		$komentari = $this->komentar_model->izmeni_status_komentara($id, '1');
+		//var_dump($id);
+		redirect(base_url().'admin/komentari');
+	}
+	public function draftujkomentar($id){
+		$komentari = $this->komentar_model->izmeni_status_komentara($id, '0');
+		//var_dump($id);
+		redirect(base_url().'admin/komentari');
+	}
+	public function odbijkomentar($id){
+		$komentari = $this->komentar_model->izmeni_status_komentara($id, '-1');
+		//var_dump($id);
+		redirect(base_url().'admin/komentari');
+	}
+	
+	public function clanak(){
+		$id = $this->input->get('id');
+		
+		if($id != false){
+			$komentar = $this->komentar_model->vratiKomentar($id);
+			$data['komentar'] = $komentar;
+			$data['main_content'] = 'admin/admin_edit_komentar';
+			$this->load->view('admin/includes/admin_template', $data);
+		} else {
+			echo "error";
+		}
+	}
+
+	public function edit_komentar(){
+		//vrsi editovanje clanka
+
+		$data = array(
+			'id'				=>  $this->input->post('id'),
+			'tekst_komentara'	=>  $this->input->post('tekst_komentara'),
+			'status'			=>  $this->input->post('status')
+			);
+		$this->komentar_model->izmeni_komentar($data);
+		echo "Uspešno ste izmenili komentar";
+
+
+		
+		
+	}
+
+
+	public function korisnici(){
+
+		$korisnici = $this->korisnik_model->vrati_korisnike();
+		$data['korisnici'] = $korisnici;
+		$data['main_content'] = 'admin/admin_korisnici';
+
+		//$data['sortType']=$sortType;
+		$this->load->view('admin/includes/admin_template', $data);
+
+	}
+
+		public function korisnik_edit(){
+			$id = $this->input->get('id');
+			$korisnik = $this->korisnik_model->vrati_korisnika($id);
+		//$korisnici = $this->korisnik_model->vrati_korisnike();
+		$data['korisnik'] = $korisnik;
+		$data['main_content'] = 'admin/admin_korisnik_edit';
+
+		//$data['sortType']=$sortType;
+		$this->load->view('admin/includes/admin_template', $data);
+
+	}
+
+	public function edit_korisnika(){
+
+		$data = array(
+			'id'				=>  $this->input->post('id'),
+			'email'	=>  $this->input->post('email'),
+			'nivoPrivilegija'			=>  $this->input->post('nivoPrivilegija')
+			);
+		$this->korisnik_model->izmeni_korisnika($data);
+		echo "Uspešno ste izmenili korisnika";
+	}
+
+
 }
 
 ?>

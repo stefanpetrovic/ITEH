@@ -41,10 +41,10 @@ $this->load->view('admin/head.php');
       <li><a href="<?php echo base_url() . 'admin/kategorije';?>">
        Kategorije
       </a></li>
-      <li class><a href="#">
+      <li class><a href="<?php echo base_url() . 'admin/komentari';?>">
         Komentari
       </a></li>
-      <li class><a href="#">
+      <li class><a href="<?php echo base_url() . 'admin/korisnici';?>">
         Korisnici
       </a></li>
       

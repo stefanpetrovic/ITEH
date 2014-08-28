@@ -35,7 +35,7 @@
       </div>
       <!-- Menu -->
       <div class="row" style="height: 60px;">
-        <div class="col-md-10 col-md-offset-1" style="height: 40px; padding: 10px;">
+        <div class="col-md-5 col-md-offset-1" style="height: 40px; padding: 10px;">
           <ul class="nav nav-pills" role="tablist">
             <li class="active"><a href="<?php echo base_url().'site/index';?>">Naslovna</a></li>
             <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal/0';?>">Fudbal</a></li>
@@ -45,12 +45,35 @@
                 Ostali sportovi <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Kategorija A</a></li>
-                <li><a href="#">Kategorija B</a></li>
+                <?php 
+                	if ($menu_items) {
+                		foreach($menu_items as $menu_item) {
+            				echo '<li><a href="' . base_url() . 'site/vestiPoKategoriji/' . $menu_item-> naziv . '/0' . '">' . $menu_item->naziv . '</a></li>';
+            			}	
+                	}
+            		
+            	?>
               </ul>
             </li>
             <li><a href="#">Kontakt</a></li>
             <li><a href="#">Najcitanije</a></li>
           </ul>
+        </div>
+        <div class="col-md-4 col-md-offset-1" style="padding-top: 15px;">
+        	<p>
+        		<?php 
+        			if ($korisnik['ulogovan']) {
+        				echo "Dobrodosli " . $korisnik['username'];
+						if ($korisnik['nivoPrivilegija'] == 2) {
+							echo ' <a href="' . base_url() . '/admin">ovde</a> mozete pristupiti admin panelu.';
+						}
+        			}else {
+        				echo 'Niste ulogovani, <a href="' . base_url() . 'site/logovanje">ovde</a> se mozete ulogovati.';
+        			}
+					
+        			
+        		?>	
+        	</p>
+        	
         </div>
       </div>

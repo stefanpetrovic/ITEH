@@ -20,6 +20,22 @@ class glavni_model extends CI_model {
 		}
 	}
 
+	function validate() {
+
+		$this -> db -> where('username', $this -> input -> post('username'));
+		$this -> db -> where('password', $this -> input -> post('password'));
+		$query = $this -> db -> get('korisnik');
+
+		if ($query -> num_rows == 1) {
+			foreach ($query->result() as $row) {
+				return $row -> nivoPrivilegija;
+			}
+			return $data;
+		} else {
+			return 3;
+		}
+	}
+
 	function clanci_za_kat($naziv, $offset) {
 		$this -> db -> select('clanak.clanakID as clanakID, datum, kratakTekst, dugiTekst, naslov, autorID, korisnikID, username,  featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
@@ -45,12 +61,10 @@ class glavni_model extends CI_model {
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> where('clanakID', $idClanka);
-		
+
 		$query = $this -> db -> get();
 
-		
-		$kategorije = $this->kategorija_model->vratiKategorijeZaClanak($idClanka);
-		
+		$kategorije = $this -> kategorija_model -> vratiKategorijeZaClanak($idClanka);
 
 		if ($query -> num_rows() > 0) {
 
@@ -95,11 +109,10 @@ class glavni_model extends CI_model {
 				$whereClause = "clanakkategorija.kategorijaID=" . $row -> kategorijaID . " OR ";
 			}
 			if (strlen($whereClause) > 0) {
-				$whereClause = substr($whereClause, 0, strlen($whereClause) - 4);	
-			}else {
+				$whereClause = substr($whereClause, 0, strlen($whereClause) - 4);
+			} else {
 				$whereClause = "1 = 1";
 			}
-			
 
 			$this -> db -> select('clanak.clanakID as clanakID, naslov, username, autorID, featuredImage, brojPregleda');
 			$this -> db -> from('clanak');
@@ -109,9 +122,9 @@ class glavni_model extends CI_model {
 			$this -> db -> where($whereClause, null, false);
 			$this -> db -> order_by('brojPregleda', 'desc');
 			$this -> db -> limit(5);
-			
+
 			$query = $this -> db -> get();
-			
+
 			if ($query -> num_rows() > 0) {
 				foreach ($query->result() as $row) {
 					$data[] = $row;
@@ -147,13 +160,13 @@ class glavni_model extends CI_model {
 		}
 
 	}
-	
+
 	function najsvezijiClanci() {
-		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');	
+		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> limit(12);
 		$this -> db -> order_by("datum", "desc");
-		
+
 		$query = $this -> db -> get();
 
 		if ($query -> num_rows() > 0) {
@@ -165,13 +178,13 @@ class glavni_model extends CI_model {
 			return false;
 		}
 	}
-	
+
 	function najnovijiClanciZaMix($limit, $offset) {
-		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');	
+		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> limit($limit, $offset);
 		$this -> db -> order_by("datum", "desc");
-		
+
 		$query = $this -> db -> get();
 
 		if ($query -> num_rows() > 0) {
@@ -186,7 +199,7 @@ class glavni_model extends CI_model {
 
 	function clanci_po_datumu() {
 
-		$this -> db -> select('clanak.clanakID as clanakID, naslov, kratakTekst, datum, username, featuredImage, brojPregleda');	
+		$this -> db -> select('clanak.clanakID as clanakID, naslov, kratakTekst, datum, username, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		//$this -> db -> where($whereClause, null, false);
@@ -225,7 +238,7 @@ class glavni_model extends CI_model {
 		}
 	}
 
-	function kategorije() {
+	function vratiKategorije() {
 		$query = $this -> db -> get('kategorija', 10, 2);
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -236,96 +249,90 @@ class glavni_model extends CI_model {
 			return false;
 		}
 	}
-	
+
 	function like($komentarID, $korisnikID, $like) {
 		$this -> db -> select('korisnikID, komentarID');
 		$this -> db -> from('likedislike');
 		$this -> db -> where('korisnikID', $korisnikID);
 		$this -> db -> where('komentarID', $komentarID);
 		$query = $this -> db -> get();
-		
-		if ($query->num_rows() == 0) {
-			$this->db->set('korisnikID', $korisnikID);
-			$this->db->set('komentarID', $komentarID);
-			$this->db->set('like', $like);
+
+		if ($query -> num_rows() == 0) {
+			$this -> db -> set('korisnikID', $korisnikID);
+			$this -> db -> set('komentarID', $komentarID);
+			$this -> db -> set('like', $like);
 			$this -> db -> insert('likedislike');
-			
-			$this->db->select('likes, dislikes');
-			$this->db->from('komentar');
-			$this->db->where('komentarID', $komentarID);
-			
-			$row = $this->db->get()->result();
-			
+
+			$this -> db -> select('likes, dislikes');
+			$this -> db -> from('komentar');
+			$this -> db -> where('komentarID', $komentarID);
+
+			$row = $this -> db -> get() -> result();
+
 			if ($like > 0) {
-				$likes = $row[0]->likes + 1;
-				$this->db->set('likes', $likes);
-				$this->db->where('komentarID', $komentarID);
-				$this->db->update('komentar');
-			}else {
-				$dislikes = $row[0]->dislikes + 1;
-				$this->db->set('dislikes', $dislikes);
-				$this->db->where('komentarID', $komentarID);
-				$this->db->update('komentar');
+				$likes = $row[0] -> likes + 1;
+				$this -> db -> set('likes', $likes);
+				$this -> db -> where('komentarID', $komentarID);
+				$this -> db -> update('komentar');
+			} else {
+				$dislikes = $row[0] -> dislikes + 1;
+				$this -> db -> set('dislikes', $dislikes);
+				$this -> db -> where('komentarID', $komentarID);
+				$this -> db -> update('komentar');
 			}
-						
+
 			return true;
-		}else {
+		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 	function saberiLajkoveZaKomentar($komentarID) {
-		$this->db->select('likes, dislikes');
-		$this->db->from('komentar');
-		$this->db->where('komentarID', $komentarID);
-		$query = $this->db->get();
-		
-		$result = $query->result();
-		$suma_lajkova = $result[0]->likes - $result[0]->dislikes;
+		$this -> db -> select('likes, dislikes');
+		$this -> db -> from('komentar');
+		$this -> db -> where('komentarID', $komentarID);
+		$query = $this -> db -> get();
+
+		$result = $query -> result();
+		$suma_lajkova = $result[0] -> likes - $result[0] -> dislikes;
 		return $suma_lajkova;
 	}
 
 	function dodaj_komentar($sadrzajKomentara, $korisnikID, $clanakID) {
 		$date = date('Y-m-d H:i:s');
-		$this->db->set('userID', $korisnikID);
-		$this->db->set('tekst', $sadrzajKomentara);
-		$this->db->set('likes', 0);
-		$this->db->set('dislikes', 0);
-		$this->db->set('clanakID', $clanakID);
-		$this->db->set('odabran', 0);
-		$this->db->set('datum', $date);
-		$this->db->insert('komentar');
+		$this -> db -> set('userID', $korisnikID);
+		$this -> db -> set('tekst', $sadrzajKomentara);
+		$this -> db -> set('likes', 0);
+		$this -> db -> set('dislikes', 0);
+		$this -> db -> set('clanakID', $clanakID);
+		$this -> db -> set('odabran', 0);
+		$this -> db -> set('datum', $date);
+		$this -> db -> insert('komentar');
 		return true;
 	}
 
-	function dodaj_clanak($data){
+	function dodaj_clanak($data) {
 
 		//var_dump($data);
-		$this->db->insert('clanak', $data); 
-		return $this->db->insert_id();
-
+		$this -> db -> insert('clanak', $data);
+		return $this -> db -> insert_id();
 
 	}
 
-	function izmeni_clanak($data){
+	function izmeni_clanak($data) {
 
-		
-		
-		$this->db->where('clanakID', $data['id']);
+		$this -> db -> where('clanakID', $data['id']);
 		unset($data['id']);
-		$this->db->update('clanak', $data);
+		$this -> db -> update('clanak', $data);
 		return;
-
 
 	}
 
+	function obrisi_clanak($idClanka) {
 
-	function obrisi_clanak($idClanka){
-
-		$this->db->delete('clanak', array('clanakID' => $idClanka)); 
+		$this -> db -> delete('clanak', array('clanakID' => $idClanka));
 		return;
-
 
 	}
 

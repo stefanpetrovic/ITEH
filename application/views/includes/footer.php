@@ -12,6 +12,32 @@
   	</div>
   	
   </div>
+  <script type="text/javascript">
+  	function proveriUsername() {
+  		var podaci = {
+  			username: $('#username').val()
+  		};
+  		$.ajax({
+  			url: "<?php echo site_url('site/proveriUsername')?>",
+			type: 'POST',
+			data: podaci,
+			success: function(msg) {
+				if (msg == true){
+					$('#usernameDiv').attr("class", "form-group has-success has-feedback");
+					$('#ikonicaUsername').remove();
+					$('#usernameDiv').append('<span id="ikonicaUsername" class="glyphicon glyphicon-ok form-control-feedback"></span>');
+				}else {
+					$('#usernameDiv').attr("class", "form-group has-error has-feedback");
+					$('#ikonicaUsername').remove();
+					$('#usernameDiv').append('<span id="ikonicaUsername" class="glyphicon glyphicon-remove form-control-feedback"></span>');
+				}
+				
+				
+			}
+  		});
+  		
+  	}
+  </script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
   </body>

@@ -2,7 +2,7 @@
 <div class="row">
 
 	<?php 
-	
+		
 		if ($clanak) {
 			
 			$clanak = $clanak[0][0];
@@ -41,7 +41,7 @@
 		<!-- Forma za unos komentara na clanak-->
 		
 		<div style="padding: 10px;">
-			<textarea class="form-control" rows="3" id="sadrzajKomentara">Ostavite komentar...</textarea>
+			<textarea class="form-control" rows="3" id="sadrzajKomentara" >Ostavite komentar...</textarea>
 			<br/>
 				<button class="button" class="btn btn-default" onclick="ostaviKomentar();">Ostavi komentar</button>
 			<br />
@@ -126,6 +126,8 @@
 	<!-- Kolona za suggested vesti -->
 	<div class="col-md-4" style="height: 200px;">
 	<?php 
+	if ($povezaniClanci) {
+		
 		foreach($povezaniClanci as $clanak) {
 			$length = strlen($clanak->featuredImage);
 			$dotPosition = strrpos($clanak->featuredImage, '.');
@@ -165,14 +167,20 @@
 		</div>
 	<?php
 		}
+	}
 	?>
 		
 	</div>
 	<script type="text/javascript">
 		function oceni(komentarID, ocena) {
+			var ulogovan = <?php if ($korisnik['ulogovan']) echo '1'; else echo '0'; ?>;
+			if (ulogovan == 0) {
+				alert('Ne mozete glasati ako niste ulogovani!');
+				return false;
+			}
 			var podaci = {
 				komentarID: komentarID,
-				korisnikID: '4',
+				korisnikID: '<?php if ($korisnik['ulogovan']) echo $korisnik['idKorisnika']; else echo -1;?>',
 				like : ocena
 			};
 			$.ajax({
@@ -182,7 +190,6 @@
 				async: false,
 				success: function(msg) {
 					var podaci = jQuery.parseJSON(msg);
-					alert(podaci.brojKomentara);
 					alert(podaci.poruka);
 					if (podaci.poruka == 'Uspesno dodat glas') {
 						$('#brojacGlasova' + komentarID).html(podaci.brojKomentara);	
@@ -194,9 +201,14 @@
 		}
 		
 		function ostaviKomentar() {
+			var ulogovan = <?php if ($korisnik['ulogovan']) echo '1'; else echo '0'; ?>;
+			if (ulogovan == 0) {
+				alert('Ne mozete ostaviti komentar ako niste ulogovani!');
+				return false;
+			}
 			var podaci = {
-				sadrzajKomentara : $('#sadrzajKomentara').html(),
-				korisnikID: '3', 
+				sadrzajKomentara : $('#sadrzajKomentara').val(),
+				korisnikID: '<?php if ($korisnik['ulogovan']) echo $korisnik['idKorisnika']; else echo -1;?>', 
 				clanakID: '<?php echo $clanak->clanakID; ?>'
 			};
 			$.ajax({
@@ -208,6 +220,7 @@
 					$('#sadrzajKomentara').val("");
 				}
 			});
+			return false;
 		}
 		
 	</script>

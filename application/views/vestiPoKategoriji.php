@@ -11,7 +11,7 @@
 		<div class="row">
 			<div class="col-md-12" style="height: 150px;">
 				<div class="row">
-					<div class="col-md-3"><img src="<?php echo base_url() . $clanak->featuredImage;?>" class="img-responsive media-object pull-right" style="height: 150px;"/></div>
+					<div class="col-md-3"><a href="<?php echo base_url(). 'site/vest/'.$clanak->clanakID;?>"><img src="<?php echo base_url() . $clanak->featuredImage;?>" class="img-responsive media-object pull-right" style="height: 150px;"/></a></div>
 					<div class="col-md-7">
 						<div class="row">
 							<div class="col-md-12" style="height: 30px; font-weight: 800; color: blue;"><a href="<?php echo base_url(). 'site/vest/'.$clanak->clanakID;?>"><?php echo $clanak->naslov;?></a></div>
@@ -19,7 +19,7 @@
 						<div class="row">
 							<div class="col-md-12" style="height: 120px">
 								<p><?php echo $clanak->kratakTekst;?></p>
-								<a href="#">Citaj dalje</a>
+								<a href="<?php echo base_url(). 'site/vest/'.$clanak->clanakID;?>">Citaj dalje</a>
 							</div>
 						</div>
 					</div>

@@ -2,9 +2,16 @@
 
 class glavni_model extends CI_model {
 
-	function dodaj_korisnika($data) {
-		$this -> db -> insert('korisnik', $data);
-		return;
+	function dodaj_korisnika($username, $password, $email) {
+		$this->db->set('username', $username);
+		$this->db->set('password', $password);
+		$this->db->set('email', $email);
+		$this->db->set('brKomentara', 0);
+		$this->db->set('nivoPrivilegija', 1);
+		$this->db->set('state', 0);
+		
+		$this->db->insert('korisnik');
+		return true;
 	}
 
 	function korisnik_postoji($ime, $sifra)//ako ti vise odgovara, mogu da promenim da uradim sa nizom
@@ -37,6 +44,17 @@ class glavni_model extends CI_model {
 	function proveriUsername($username) {
 		$this->db->from('korisnik');
 		$this->db->where('username', $username);
+		$query = $this->db->get();
+		if($query -> num_rows() == 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	function proveriEmail($email) {
+		$this->db->from('korisnik');
+		$this->db->where('email', $email);
 		$query = $this->db->get();
 		if($query -> num_rows() == 0) {
 			return true;

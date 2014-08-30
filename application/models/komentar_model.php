@@ -16,7 +16,9 @@ class komentar_model extends CI_model {
 
 
 
-	function vrati_komentare($sort, $sortType){
+	function vrati_komentare($sort, $sortType,$per_page, $page){
+		
+
 		switch ($sort) {
 			case 'datum':
 			$orderby = "datum";
@@ -37,6 +39,7 @@ class komentar_model extends CI_model {
 		$this -> db -> from('komentar');
 		$this -> db -> join('korisnik', 'komentar.userID = korisnik.korisnikID');
 		$this -> db -> join('clanak', 'clanak.clanakID = komentar.clanakID');
+		$this -> db -> limit($per_page, $page);
 		$this -> db -> order_by($orderby, $sortT);
 
 		$query = $this -> db -> get();

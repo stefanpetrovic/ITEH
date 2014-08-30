@@ -2,11 +2,11 @@
 
 class korisnik_model extends CI_model {
 
-	function vrati_korisnike(){
-		
+	function vrati_korisnike($per_page, $page){
 
 		$this -> db -> select('korisnikID, username, email,nivoPrivilegija');
 		$this -> db -> from('korisnik');
+		$this -> db -> limit($per_page, $page);
 		$this -> db -> order_by("korisnikID", "DESC");
 
 		$query = $this -> db -> get();

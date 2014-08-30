@@ -206,13 +206,13 @@ class glavni_model extends CI_model {
 		}
 	}
 
-	function clanci_po_datumu() {
-
+	function clanci_po_datumu($totalCol,$page) {
+		//$offset = ($page-1)*10;
 		$this -> db -> select('clanak.clanakID as clanakID, naslov, kratakTekst, datum, username, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		//$this -> db -> where($whereClause, null, false);
-		$this -> db -> limit(20);
+		$this -> db -> limit($totalCol, $page);
 		// $this -> db -> from('clanak');
 		$this -> db -> order_by("datum", "desc");
 

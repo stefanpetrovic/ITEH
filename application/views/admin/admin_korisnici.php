@@ -18,6 +18,7 @@
                               2    =>    "Administrator"
             ];  
 
+            if(!empty($korisnici))
             foreach ($korisnici as $korisnik): ?>
 
 
@@ -32,8 +33,8 @@
                 <p class='heading headd'><?php echo $korisnik->email; ?></p>
               </td>
               <td><p class='heading headd'><?php echo $privilegije[$korisnik->nivoPrivilegija]; ?></p></td>
-              <td><a href='<?php echo 'korisnik_edit?id='.$korisnik->korisnikID; ?>'>
-                <button type='button' class='btn btn-info'>Edit</button>
+              <td><a href='<?php echo base_url().'admin/korisnik_edit?id='.$korisnik->korisnikID; ?>'>
+                <button type='button' class='btn btn-info'>Izmeni</button>
               </a></td>
             </tr>
             
@@ -49,13 +50,45 @@
 
       <div align="center">
         <ul class="pagination">
-          <li><a href="#">&laquo;</a></li>
+
+          <?php
+// if($page == false || $page==1){
+//   $page = '1';
+//   echo "<li class=\"disabled\"><a href='#'>&laquo;</a></li>";
+//   $smallest = '1';
+//   $largest = '6';
+// } else {
+//   echo "<li><a href='korisnici?page=".($page-1)."'>&laquo;</a></li>";
+//   $smallest = -3+$page;
+//   $largest = (sizeof($korisnici)<10) ? $page : 3+$page;
+//   //$largest = 3+$page;
+// }
+
+
+
+// while ($smallest <= $largest) {
+//   $active =($smallest == $page) ? "active" : "";
+//   if($smallest > 0){
+//   echo "<li class=\"".$active."\"><a href=korisnici?page=".$smallest.">".$smallest."</a></li>";
+//   }
+//   $smallest++;
+// }
+
+//  echo "<li><a href='korisnici?page=".($page+1)."'>&raquo;</a></li>";
+
+?>
+
+<?php
+echo $pagination;
+?>
+
+       <!--    <li><a href="#">&laquo;</a></li>
           <li><a href="#">1</a></li>
           <li><a href="#">2</a></li>
           <li><a href="#">3</a></li>
           <li><a href="#">4</a></li>
           <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
+          <li><a href="#">&raquo;</a></li> -->
         </ul>
       </div>
     </div>  <!-- End of 2nd column -->

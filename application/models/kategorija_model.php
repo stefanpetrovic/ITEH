@@ -19,6 +19,25 @@ class kategorija_model extends CI_model {
 
 	}
 
+	function vratiKateg($per_page, $page){
+		$this -> db -> select('kategorijaID, naziv');
+		$this -> db -> from('kategorija');
+		$this -> db -> limit($per_page, $page);
+
+		$query = $this -> db -> get();
+
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		} else {
+			return false;
+		}
+
+	}
+
+
 	function vratiKategorijeZaClanak($clanakID){
 		$this -> db -> select('clanakkategorija.kategorijaID, naziv');
 		$this -> db -> from('clanakkategorija');

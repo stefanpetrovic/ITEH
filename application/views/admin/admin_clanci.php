@@ -17,7 +17,7 @@
 
         <div class="col-md-12 row" style="margin: 30px 10px;">
           <h3 class="col-md-3">Dodaj novi članak</h3>
-          <div class="col-md-3" style="margin-top: 15px;"> <a href='noviclanak'><button type='button' class='btn btn-success'>Dodaj</button></a></div>
+          <div class="col-md-3" style="margin-top: 15px;"> <a href="<?php echo base_url(); ?>admin/noviclanak"><button type='button' class='btn btn-success'>Dodaj</button></a></div>
         </div>
         <table class="table table-striped table-hover">
           <thead>
@@ -43,7 +43,7 @@
               </a></td>
               <td><a href='#'><p class='sm-heading'><?php echo $clanak->username; ?></p></a></td>
               <td><a href='#'><p class='sm-heading'><?php echo $clanak->datum; ?></p></a></td>
-              <td><a href='<?php echo 'clanakedit?id='.$clanak->clanakID; ?>'>
+              <td><a href='<?php echo base_url().'admin/clanakedit?id='.$clanak->clanakID; ?>'>
                 <button type='button' class='btn btn-info'>Edit</button>
               </a></td>
               <td><a href='<?php echo $clanak->clanakID; ?>' class='btn btn-danger delete'>Delete
@@ -69,13 +69,44 @@
 
       <div align="center">
         <ul class="pagination">
-          <li><a href="#">&laquo;</a></li>
+
+<?php
+// if($page == false || $page==1){
+//   $page = '1';
+//   echo "<li class=\"disabled\"><a href='#'>&laquo;</a></li>";
+//   $smallest = '1';
+//   $largest = '6';
+// } else {
+//   echo "<li><a href='clanci?page=".($page-1)."'>&laquo;</a></li>";
+//   $smallest = -3+$page;
+//   $largest = (sizeof($najcitanijiClanci)<10) ? $page : 3+$page;
+//   //$largest = 3+$page;
+// }
+
+
+
+// while ($smallest <= $largest) {
+//   $active =($smallest == $page) ? "active" : "";
+//   if($smallest > 0){
+//   echo "<li class=\"".$active."\"><a href=clanci?page=".$smallest.">".$smallest."</a></li>";
+//   }
+//   $smallest++;
+// }
+
+//  echo "<li><a href='clanci?page=".($page+1)."'>&raquo;</a></li>";
+
+?>
+<?php
+echo $pagination;
+?>
+
+       <!--    <li><a href="#">&laquo;</a></li>
           <li><a href="#">1</a></li>
           <li><a href="#">2</a></li>
           <li><a href="#">3</a></li>
           <li><a href="#">4</a></li>
           <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
+          <li><a href="#">&raquo;</a></li> -->
         </ul>
       </div>
     </div>  <!-- End of 2nd column -->

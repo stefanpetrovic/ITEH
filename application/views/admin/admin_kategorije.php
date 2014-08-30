@@ -11,7 +11,9 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($kategorije as $kategorija): ?>
+            <?php 
+            if(!empty($kategorije))
+            foreach ($kategorije as $kategorija): ?>
 
 
 
@@ -34,7 +36,8 @@
               
           
             
- <?php endforeach ?>
+ <?php endforeach 
+ ?>
  <tr id='clnew'>
 
 <td></td>
@@ -42,7 +45,7 @@
 <td></td>
 <td></td>
  </tr>
-              <form action="dodaj_kategoriju" method="POST">
+              <form action= "<?php echo base_url(); ?>admin/dodaj_kategoriju" method="POST">
                 <tr id='cdlnew'>
                   <td><p class='heading'></p></td>
                   <td>
@@ -64,13 +67,45 @@
 
       <div align="center">
         <ul class="pagination">
-          <li><a href="#">&laquo;</a></li>
+
+<?php
+// if($page == false || $page==1){
+//   $page = '1';
+//   echo "<li class=\"disabled\"><a href='#'>&laquo;</a></li>";
+//   $smallest = '1';
+//   $largest = '6';
+// } else {
+//   echo "<li><a href='kategorije?page=".($page-1)."'>&laquo;</a></li>";
+//   $smallest = -3+$page;
+//   $largest = (sizeof($kategorije)<10) ? $page : 3+$page;
+//   //$largest = 3+$page;
+// }
+
+
+
+// while ($smallest <= $largest) {
+//   $active =($smallest == $page) ? "active" : "";
+//   if($smallest > 0){
+//   echo "<li class=\"".$active."\"><a href=kategorije?page=".$smallest.">".$smallest."</a></li>";
+//   }
+//   $smallest++;
+// }
+
+//  echo "<li><a href='kategorije?page=".($page+1)."'>&raquo;</a></li>";
+
+?>
+
+<?php
+echo $pagination;
+?>
+
+         <!--  <li><a href="#">&laquo;</a></li>
           <li><a href="#">1</a></li>
           <li><a href="#">2</a></li>
           <li><a href="#">3</a></li>
           <li><a href="#">4</a></li>
           <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
+          <li><a href="#">&raquo;</a></li> -->
         </ul>
       </div>
     </div>  <!-- End of 2nd column -->

@@ -1,17 +1,50 @@
 <?php
 
 class admin extends CI_Controller {
+	/*	url ex: 'admin/clanci'
+		total_rows : retrieve total number of rows before (ex: $this->db->get('clanak')->num_rows())
+		records_per_page: numbers of items do display on page
+		num_links: number of pagination options
+	return: initialized pagination;
+*/
+	function admin_pagination($url, $total_rows, $records_per_page, $num_links){
+		$this->load->library('pagination');
+
+		$config['base_url'] = base_url().$url;
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = $records_per_page;
+		$config['num_links'] = $num_links;
+
+		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+         
+        $config['cur_tag_open'] = "<li><span><b>";
+        $config['cur_tag_close'] = "</b></span></li>";
+		$this->pagination->initialize($config);
+		return $this->pagination->create_links(); 
+	}
 
 	public function index (){
 		$data['main_content'] ='admin/admin_index';
+		
 		$this->load->view('admin/includes/admin_template', $data);
 	}
 
 	public function clanci(){
-		$najcitanijiClanci = $this->glavni_model->clanci_po_datumu();
-		// var_dump($najcitanijiClanci);
+		// pagination 
+		$page = $this->uri->segment(3);
+
+		$num_rows = $this->db->get('clanak')->num_rows();
+		$per_page = 5;
+		$pagination = $this->admin_pagination('admin/clanci', $num_rows, $per_page, 7);
+		$pagination = $this->pagination->create_links();
+		
+		$najcitanijiClanci = $this->glavni_model->clanci_po_datumu($per_page,$page);
+		
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
 		$data['main_content'] = 'admin/admin_clanci';
+		$data['page'] = $page;
+		$data['pagination'] = $pagination;
 		$this->load->view('admin/includes/admin_template', $data);
 	}
 
@@ -88,8 +121,6 @@ class admin extends CI_Controller {
 		$newId = $this->db->insert_id();
 		$this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
 		echo "Uspešno ste ubacili članak";
-		// var_dump($data);
-		// var_dump($kategorije);
 	}
 
 	public function obrisi_clanak(){
@@ -104,12 +135,21 @@ class admin extends CI_Controller {
 
 
 	public function kategorije(){
+		// pagination 
+		$page = $this->uri->segment(3);
+		
+		$num_rows = $this->db->get('kategorija')->num_rows();
+		$per_page = 5;
+		$pagination = $this->admin_pagination('admin/kategorije', $num_rows, $per_page, 7);
+		$pagination = $this->pagination->create_links();
 
 
-		$kategorije = $this->kategorija_model->vratiKategorije();
+		$kategorije = $this->kategorija_model->vratiKateg($per_page,$page);
 		
 		$data['kategorije'] = $kategorije;
 		//var_dump($data);
+		$data['page'] = $page;
+		$data['pagination'] = $pagination;
 		$data['main_content'] = 'admin/admin_kategorije';
 		$this->load->view('admin/includes/admin_template', $data);
 	}
@@ -153,6 +193,9 @@ class admin extends CI_Controller {
 
 
 	public function komentari(){
+
+
+
 		$sort = $this->input->get('sort');
 
 		//put sort type in session
@@ -165,8 +208,53 @@ class admin extends CI_Controller {
 		}
 		$this->session->set_userdata("verified", $session_data);
 		$sortType = $session_data['sortKom'];
-		$komentari = $this->komentar_model->vrati_komentare($sort, $sortType);
+
+
+
+
+		// pagination 
+		$page = $this->uri->segment(3);
+
+		$this->load->library('pagination');
+
+		$config['base_url'] = base_url().'admin/komentari';
+		$config['total_rows'] = $this->db->get('komentar')->num_rows();
+		$config['per_page'] = 5;
+		$config['num_links'] = 7;
+		//$config['page_query_string'] = TRUE;
+		$config['enable_query_string'] = TRUE;
+
+		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+         
+        $config['cur_tag_open'] = "<li><span><b>";
+        $config['cur_tag_close'] = "</b></span></li>";
+
+		$this->pagination->initialize($config);
+		$pagination = $this->pagination->create_links();
+
+		//dodavanje get parametra sort u linkove //
+		$p = preg_split("[komentari]",$pagination);
+		$d = array();
+	
+		foreach ($p as $value) {
+			if (strpos($value, "<li") === 0){
+				array_push($d, $value);
+			} else {
+				$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+			array_push($d, $newStr);
+			}
+			
+		}
+		//novi segment paginacije sa sredjenim get sort parametrom
+		$newPagination = implode("komentari", $d);
+		//---------
+		
+
+		$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
 		$data['komentari'] = $komentari;
+		$data['page'] = $page;
+		$data['pagination'] = $newPagination;
 		$data['main_content'] = 'admin/admin_komentari';
 
 		//$data['sortType']=$sortType;
@@ -220,19 +308,28 @@ class admin extends CI_Controller {
 
 
 	public function korisnici(){
+		// pagination 
+		$page = $this->uri->segment(3);
 
-		$korisnici = $this->korisnik_model->vrati_korisnike();
+		$num_rows = $this->db->get('korisnik')->num_rows();
+		$per_page = 4;
+		$pagination = $this->admin_pagination('admin/korisnici', $num_rows, $per_page, 7);
+		$pagination = $this->pagination->create_links();
+		
+
+		$korisnici = $this->korisnik_model->vrati_korisnike($per_page, $page);
 		$data['korisnici'] = $korisnici;
 		$data['main_content'] = 'admin/admin_korisnici';
-
+		$data['pagination'] = $pagination;
+		$data['page'] = $page;
 		//$data['sortType']=$sortType;
 		$this->load->view('admin/includes/admin_template', $data);
 
 	}
 
-		public function korisnik_edit(){
-			$id = $this->input->get('id');
-			$korisnik = $this->korisnik_model->vrati_korisnika($id);
+	public function korisnik_edit(){
+		$id = $this->input->get('id');
+		$korisnik = $this->korisnik_model->vrati_korisnika($id);
 		//$korisnici = $this->korisnik_model->vrati_korisnike();
 		$data['korisnik'] = $korisnik;
 		$data['main_content'] = 'admin/admin_korisnik_edit';

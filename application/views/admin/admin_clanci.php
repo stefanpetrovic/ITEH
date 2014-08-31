@@ -38,7 +38,7 @@
 
             <tr id='<?php echo 'cl'.$clanak->clanakID;?>'>
               <td><p class='heading'><?php echo $clanak->clanakID; ?></p></td>
-              <td><a href='<?php echo 'clanakedit?id='.$clanak->clanakID; ?>'>
+              <td><a href='<?php echo base_url().'admin/clanakedit?id='.$clanak->clanakID; ?>'>
                 <p class='heading'><?php echo $clanak->naslov; ?></p>
               </a></td>
               <td><a href='#'><p class='sm-heading'><?php echo $clanak->username; ?></p></a></td>

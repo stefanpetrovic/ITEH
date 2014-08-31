@@ -7,11 +7,11 @@
   <table class="table table-striped table-hover">
     <thead>
       <tr>
-        <th><a href="<?php echo current_url();?>/?sort=status">Status</a></th>
-        <th><a href="<?php echo current_url();?>/?sort=korisnik">Autor</a></th>
+        <th><a href="<?php echo current_url();?>/?sort=status&c=t">Status</a></th>
+        <th><a href="<?php echo current_url();?>/?sort=korisnik&c=t">Autor</a></th>
         <th>Komentar</th>
         <th>Članak</th>
-        <th><a href="<?php echo current_url();?>/?sort=datum">Datum</a></th>
+        <th><a href="<?php echo current_url();?>/?sort=datum&c=t">Datum</a></th>
         <th>Odobri</th>
         <th>Arhiviraj</th>
       </tr>

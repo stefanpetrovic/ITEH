@@ -197,20 +197,38 @@ class admin extends CI_Controller {
 
 
 		$sort = $this->input->get('sort');
-		//promenljiva koja nam kaze da li da menjamo sort
-		$c = $this->input->get('c');
-		var_dump($c);
-		//put sort type in session
-		// if($c){
+		if($sort){
 			$session_data = $this->session->userdata('verified');
+			$session_data['sort']=$sort;
 
 			if($session_data['sortKom']== "descending"){
 				$session_data['sortKom'] = "ascending";
 			} else {
 				$session_data['sortKom'] = "descending";
 			}
+			echo "Sorttype:";
+			var_dump($sort);
+			echo "Sortkom:";
+			var_dump($session_data['sortKom']);
+
 			$this->session->set_userdata("verified", $session_data);
 			$sortType = $session_data['sortKom'];
+			$sortParam = $session_data['sort'];
+
+		} else {
+			
+			$session_data = $this->session->userdata('verified');
+			
+			$sortType = $session_data['sortKom'];
+			$sortParam = $session_data['sort'];
+
+
+			echo "Sorttype:";
+			var_dump($session_data['sortKom']);
+			echo "Sortkom:";
+			var_dump($session_data['sort']);
+		}
+	
 		// } else {
 		// 	var_dump("DDDD");
 		// 	$session_data = $this->session->userdata('verified');
@@ -243,27 +261,27 @@ class admin extends CI_Controller {
 		$pagination = $this->pagination->create_links();
 
 		//dodavanje get parametra sort u linkove //
-		$p = preg_split("[komentari]",$pagination);
-		$d = array();
+		// $p = preg_split("[komentari]",$pagination);
+		// $d = array();
 
-		foreach ($p as $value) {
-			if (strpos($value, "<li") === 0){
-				array_push($d, $value);
-			} else {
-				$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
-				array_push($d, $newStr);
-			}
+		// foreach ($p as $value) {
+		// 	if (strpos($value, "<li") === 0){
+		// 		array_push($d, $value);
+		// 	} else {
+		// 		$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+		// 		array_push($d, $newStr);
+		// 	}
 			
-		}
-		//novi segment paginacije sa sredjenim get sort parametrom
-		$newPagination = implode("komentari", $d);
+		// }
+		// //novi segment paginacije sa sredjenim get sort parametrom
+		// $newPagination = implode("komentari", $d);
 		//---------
 		
 
-		$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
+		$komentari = $this->komentar_model->vrati_komentare($sortParam,$sortType,$config['per_page'], $page);
 		$data['komentari'] = $komentari;
 		$data['page'] = $page;
-		$data['pagination'] = $newPagination;
+		$data['pagination'] = $pagination;
 		$data['main_content'] = 'admin/admin_komentari';
 
 		//$data['sortType']=$sortType;

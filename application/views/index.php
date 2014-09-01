@@ -1,8 +1,13 @@
 <?php 
+	function editImageName($original) {
+		$dotInd = strrpos($original, '.');
+		return substr($original, 0, $dotInd) . '2' . substr($original, $dotInd);
+	}
+	
 	function vratiMaliClanak($clanak) {
 		echo '<div class="col-md-3">';
 		echo '<div class="row">';
-		echo '<div class="col-md-12"  style="height: 200px; background-image: url(' . base_url() . $clanak->featuredImage . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">';
+		echo '<div class="col-md-12"  style="height: 200px; background-image: url(' . base_url() . editImageName($clanak->featuredImage) . '); background-repeat: no-repeat; background-size: 100% 100%; background-origin: content-box;">';
 		echo '<div class="row">';
 		echo '<div class="col-md-12" style="height: 140px;"></div>';
 		echo '</div>';
@@ -22,7 +27,7 @@
 	function vratiVelikiClanak($clanak) {
 		echo '<div class="col-md-6">';
 		echo '<div class="row">';
-		echo '<div class="col-md-12 kockaPozadina" style="background-image: url(' . base_url() . $clanak->featuredImage . ');">';
+		echo '<div class="col-md-12 kockaPozadina" style="background-image: url(' . base_url() . editImageName($clanak->featuredImage) . ');">';
 		echo '<div class="row" >';
 		echo '<div class="col-md-12" style="height: 140px;"></div>';
 		echo '</div>';

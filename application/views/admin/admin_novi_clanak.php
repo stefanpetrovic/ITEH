@@ -38,9 +38,12 @@
           
           <div class="form-group">
             <label for="fimage" class="col-sm-2 control-label">Featured image</label>
-            <div class="col-sm-10">
-
+            <div class="col-sm-9">
+				
               <input type="text" class="form-control" id="fimage" name="fimage" value="">
+            </div>
+            <div class="col-sm-1">
+            	<button type="button">Browse</button>
             </div>
           </div>
           <div class="form-group">

@@ -35,11 +35,11 @@
       </div>
       <!-- Menu -->
       <div class="row" style="height: 60px;">
-        <div class="col-md-6 col-md-offset-1" style="height: 50px; padding: 10px;">
+        <div class="col-md-8 col-xs-offset-1" style="height: 50px; padding: 10px;">
           <ul class="nav nav-pills" role="tablist">
-            <li class="active"><a href="<?php echo base_url().'site/index';?>">Naslovna</a></li>
-            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/fudbal/0';?>">Fudbal</a></li>
-            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/kosarka/0';?>">Kosarka</a></li>
+            <li class="active"><a href="<?php echo base_url().'site/index/0';?>">Naslovna</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/1/0';?>">Fudbal</a></li>
+            <li><a href="<?php echo base_url() . 'site/vestiPoKategoriji/2/0';?>">Kosarka</a></li>
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                 Ostali sportovi <span class="caret"></span>
@@ -48,7 +48,7 @@
                 <?php 
                 	if ($menu_items) {
                 		foreach($menu_items as $menu_item) {
-            				echo '<li><a href="' . base_url() . 'site/vestiPoKategoriji/' . $menu_item-> naziv . '/0' . '">' . $menu_item->naziv . '</a></li>';
+            				echo '<li><a href="' . base_url() . 'site/vestiPoKategoriji/' . $menu_item-> kategorijaID . '/0' . '">' . $menu_item->naziv . '</a></li>';
             			}	
                 	}
             		
@@ -56,10 +56,10 @@
               </ul>
             </li>
             <li><a href="#">Kontakt</a></li>
-            <li><a href="#">Najcitanije</a></li>
+            <li><a href="<?php echo base_url() . "site/pretraga";?>">Pretraga</a></li>
           </ul>
         </div>
-        <div class="col-md-4 col-md-offset-1" style="padding-top: 20px;">
+        <div class="col-md-3" style="padding-top: 20px;">
         	<p>
         		<?php 
         			if ($korisnik['ulogovan']) {

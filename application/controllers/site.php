@@ -28,8 +28,25 @@ class Site extends CI_Controller {
 		$data['korisnik'] = $this -> korisnik;
 		$data['main_content'] = 'index';
 		$data['najcitanijiClanci'] = $najcitanijiClanci;
-		$data['mixClanci'] = $this -> glavni_model -> najnovijiClanciZaMix(12, $this -> uri -> segment(3) * 10);
+		$podaci = $this -> glavni_model -> najnovijiClanciZaMix(12, $this -> uri -> segment(3) * 12);
+		if ($podaci) {
+			$data['mixClanci'] = array_slice($podaci, 0, count($podaci) - 1);
+			$data['brojClanaka'] = array_slice($podaci, count($podaci) - 1);
+		}else {
+			$data['mixClanci'] = false;
+			$data['brojClanaka'] = 0;
+		}
+		
 		$this -> load -> view('includes/template', $data);
+	}
+	
+	public function servis() {
+		$this->load->library('curl');
+		//$this->load->library('rest');
+		$config = array('server' => 'http://football-api.com/');
+		$this->rest->initialize($config);
+		
+		$podaci = $this->get('api', array('Action' => 'today', 'APIKey' => '41a8bfcd-3790-8d64-5f6e95a6c7ab', 'comp_id' => '1'), 'json');
 	}
 
 	public function registracija() {
@@ -37,6 +54,37 @@ class Site extends CI_Controller {
 		$data['korisnik'] = $this -> korisnik;
 		$data['main_content'] = "registracija-korisnika";
 		$this -> load -> view('includes/template', $data);
+	}
+	
+	function validacijaRegistracije() {
+		$data['menu_items'] = $this -> menu_items;
+		$data['korisnik'] = $this -> korisnik;
+		
+		$this->form_validation->set_rules('username', 'Username', 'required');
+		$this->form_validation->set_rules('password', 'Password', 'required');
+		$this->form_validation->set_rules('passwordRetype','Password', 'required');
+		$this->form_validation->set_rules('email','Email', 'required|valid_email');
+		
+		$this->form_validation->set_message('required', '%s polje ne moze biti prazno');
+		$this->form_validation->set_message('valid_email', '%s nije validan, morate uneti drugi email.');
+		if ($this->form_validation->run() == FALSE) {
+			$data['main_content'] = "registracija-korisnika";
+			$this->load->view('includes/template', $data);
+		}else {
+			$username = $this->input->post('username');
+			$password = $this->input->post('password');
+			$email = $this->input->post('email');
+			
+			$result = $this->glavni_model->dodaj_korisnika($username, $password, $email);
+			
+			if ($result) {
+				$data['main_content'] = "login-korisnika";
+				$this->load->view('includes/template', $data);
+			}else {
+				echo "Greska prilikom registracije";
+			}
+			
+		}
 	}
 
 	public function logovanje() {
@@ -48,15 +96,28 @@ class Site extends CI_Controller {
 
 	public function proveriUsername() {
 		$username = $this->input->post('username');
+		if (!$username || $username==''){
+			echo false;
+			return;
+		}
 		$postoji = $this->glavni_model->proveriUsername($username);
 		if ($postoji) {
 			echo true;
 		}
 		echo false;
 	}
-
-	public function dodajPregled($idVesti, $ipAdresa) {
-		
+	
+	public function proveriEmail() {
+		$email = $this->input->post('email');
+		if (!$email || $email == '') {
+			echo false;
+			return;
+		}
+		$postoji = $this->glavni_model->proveriEmail($email);
+		if ($postoji) {
+			echo true;
+		}
+		echo false;
 	}
 
 	public function vest($idVesti) {
@@ -71,10 +132,18 @@ class Site extends CI_Controller {
 		$this -> load -> view('includes/template', $data);
 	}
 
-	public function vestiPoKategoriji($nazivKategorije, $offset) {
+	public function vestiPoKategoriji($kategorijaID, $offset) {
 		$data['korisnik'] = $this -> korisnik;
 		$data['menu_items'] = $this -> menu_items;
-		$data['clanci'] = $this -> glavni_model -> clanci_za_kat($nazivKategorije, $offset);
+		$podaci = $this -> glavni_model -> clanci_za_kat($kategorijaID, $offset);
+		if ($podaci) {
+			$data['clanci'] = array_slice($podaci, 0, count($podaci) - 1);
+			$data['brojClanaka'] = array_slice($podaci, count($podaci) - 1);
+		}else {
+			$data['clanci'] = false;
+			$data['brojClanaka'] = 0;
+		}
+		
 		$data['main_content'] = "vestiPoKategoriji";
 		$this -> load -> view('includes/template', $data);
 	}
@@ -82,8 +151,42 @@ class Site extends CI_Controller {
 	public function vestiPoAutoru($autorID, $offset) {
 		$data['korisnik'] = $this -> korisnik;
 		$data['menu_items'] = $this -> menu_items;
-		$data['clanci'] = $this -> glavni_model -> clanciPoAutoru($autorID, $offset);
+		$podaci = $this -> glavni_model -> clanciPoAutoru($autorID, $offset);
+		if ($podaci) {
+			$data['clanci'] = array_slice($podaci, 0, count($podaci) - 1);
+			$data['brojClanaka'] = array_slice($podaci, count($podaci) - 1);
+		}else {
+			$data['clanci'] = false;
+			$data['brojClanaka'] = 0;
+		}
 		$data['main_content'] = "vestiPoKategoriji";
+		$this -> load -> view('includes/template', $data);
+	}
+	
+	public function pretraga() {
+		$data['korisnik'] = $this -> korisnik;
+		$data['menu_items'] = $this -> menu_items;
+		$data['main_content'] = "pretragaForma";
+		$this -> load -> view('includes/template', $data);
+	}
+	
+	public function pretraziClanke($offset) {
+		$data['korisnik'] = $this -> korisnik;
+		$data['menu_items'] = $this -> menu_items;
+		
+		$kljucnaRec = $this->input->get('kljucnaRec');
+		$kategorijaID = $this->input->get('kategorija');
+		$podaci = $this -> glavni_model -> pretraziClankePoKljucnojReci($kljucnaRec, $kategorijaID, $offset);
+		if ($podaci) {
+			$data['clanci'] = array_slice($podaci, 0, count($podaci) - 1);
+			$data['brojClanaka'] = array_slice($podaci, count($podaci) - 1);
+		}else {
+			$data['clanci'] = false;
+			$data['brojClanaka'] = 0;
+		}
+		$data['main_content'] = "pretragaVesti";
+		$data['kljucnaRec'] = $kljucnaRec;
+		$data['kategorijaID'] = $kategorijaID;
 		$this -> load -> view('includes/template', $data);
 	}
 

@@ -20,10 +20,5 @@ class Login extends CI_Controller {
 
 	}
 
-	function registracija() {
-		$username = $this->input->post('username');
-		$password = $this->input->post('password');
-		$email = $this->input->post('email');
-		
-	}
+	
 }

@@ -3,7 +3,6 @@
 	<div class="col-md-12">
 		<!-- Pojedinacna vest -->
 		<?php 
-			
 			if ($clanci && count($clanci) > 0) {
 				foreach ($clanci as $clanak) {
 		?>
@@ -42,19 +41,19 @@
 
 
 		<!-- Druga vest -->
-		<?php $url = base_url() . $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/' . $this->uri->segment(3) . '/';?>
+		<?php $url = base_url() . $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/';?>
 		
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<ul class="pagination pagination-lg">
-					<li><a href="<?php $page = $this->uri->segment(4); if ($page > 0) $page -= 1; else $page = 0; echo $page; ?>">&laquo;</a></li>
+					<li><a href="<?php $page = $this->uri->segment(3); if ($page > 0) $page -= 1; else $page = 0; echo $page . '?kljucnaRec=' . $kljucnaRec . '&kategorija='.$kategorijaID; ?>">&laquo;</a></li>
 					<?php 
 						$brojStrana = ceil(($brojClanaka[0]/10));
 						for($i = 0; $i < $brojStrana; $i++) {
-							echo '<li><a href="' .  $url . $i . '">' . ($i + 1) . '</a></li>';
+							echo '<li><a href="' .  $url . $i . '?kljucnaRec=' . $kljucnaRec . '&kategorija='.$kategorijaID . '">' . ($i + 1) . '</a></li>';
 						}
 					?>
-					<li><a href="<?php $page = $this->uri->segment(4); if ($page < $brojStrana - 1) $page += 1; else $page = $brojStrana - 1; echo $page; ?>">&raquo;</a></li>
+					<li><a href="<?php $page = $this->uri->segment(3); if ($page < $brojStrana - 1) $page += 1; else $page = $brojStrana - 1; echo $page . '?kljucnaRec=' . $kljucnaRec . '&kategorija='.$kategorijaID; ?>">&raquo;</a></li>
 				</ul>
 			</div>
 		</div>

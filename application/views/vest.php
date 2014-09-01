@@ -58,10 +58,10 @@
 						if ($i < 5) {
 				?>
 				<li class="media">
-					<img class="media-object pull-left" src="<?php echo base_url(); ?>images/autor.jpg" style="height: 100px; width: 100px;"/>
+					
 					<div class="media-body">
 						<h4 class="media-heading"><?php echo $komentar->username; ?> <small>on <?php echo $komentar->datum; ?></small></h4>
-						<p><?php echo $komentar->tekst; ?></p>
+						<p style="margin-left: 30px; margin-top: 10px;"><?php echo $komentar->tekst; ?></p>
 						<div>
 							<p class="text-left" style="float: left;">
 								<button type="button" class="btn btn-link" id="plus" style="font-size: 20px" onclick="oceni(<?php echo $komentar->komentarID;?>, 1);">+</button>

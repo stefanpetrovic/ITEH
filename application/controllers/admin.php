@@ -16,10 +16,10 @@ class admin extends CI_Controller {
 		$config['num_links'] = $num_links;
 
 		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-         
-        $config['cur_tag_open'] = "<li><span><b>";
-        $config['cur_tag_close'] = "</b></span></li>";
+		$config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+
+		$config['cur_tag_open'] = "<li><span><b>";
+		$config['cur_tag_close'] = "</b></span></li>";
 		$this->pagination->initialize($config);
 		return $this->pagination->create_links(); 
 	}
@@ -197,18 +197,45 @@ class admin extends CI_Controller {
 
 
 		$sort = $this->input->get('sort');
+		if($sort){
+			$session_data = $this->session->userdata('verified');
+			$session_data['sort']=$sort;
 
-		//put sort type in session
-		$session_data = $this->session->userdata('verified');
-		
-		if($session_data['sortKom']== "descending"){
-			$session_data['sortKom'] = "ascending";
+			if($session_data['sortKom']== "descending"){
+				$session_data['sortKom'] = "ascending";
+			} else {
+				$session_data['sortKom'] = "descending";
+			}
+			echo "Sorttype:";
+			var_dump($sort);
+			echo "Sortkom:";
+			var_dump($session_data['sortKom']);
+
+			$this->session->set_userdata("verified", $session_data);
+			$sortType = $session_data['sortKom'];
+			$sortParam = $session_data['sort'];
+
 		} else {
-			$session_data['sortKom'] = "descending";
-		}
-		$this->session->set_userdata("verified", $session_data);
-		$sortType = $session_data['sortKom'];
+			
+			$session_data = $this->session->userdata('verified');
+			
+			$sortType = $session_data['sortKom'];
+			$sortParam = $session_data['sort'];
 
+
+			echo "Sorttype:";
+			var_dump($session_data['sortKom']);
+			echo "Sortkom:";
+			var_dump($session_data['sort']);
+		}
+	
+		// } else {
+		// 	var_dump("DDDD");
+		// 	$session_data = $this->session->userdata('verified');
+		// 	$session_data['sortKom'] = "descending";
+		// 	$this->session->set_userdata("verified", $session_data);
+		// 	$sortType = $session_data['sortKom'];
+		// }
 
 
 
@@ -225,36 +252,36 @@ class admin extends CI_Controller {
 		$config['enable_query_string'] = TRUE;
 
 		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-         
-        $config['cur_tag_open'] = "<li><span><b>";
-        $config['cur_tag_close'] = "</b></span></li>";
+		$config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+
+		$config['cur_tag_open'] = "<li><span><b>";
+		$config['cur_tag_close'] = "</b></span></li>";
 
 		$this->pagination->initialize($config);
 		$pagination = $this->pagination->create_links();
 
 		//dodavanje get parametra sort u linkove //
-		$p = preg_split("[komentari]",$pagination);
-		$d = array();
-	
-		foreach ($p as $value) {
-			if (strpos($value, "<li") === 0){
-				array_push($d, $value);
-			} else {
-				$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
-			array_push($d, $newStr);
-			}
+		// $p = preg_split("[komentari]",$pagination);
+		// $d = array();
+
+		// foreach ($p as $value) {
+		// 	if (strpos($value, "<li") === 0){
+		// 		array_push($d, $value);
+		// 	} else {
+		// 		$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+		// 		array_push($d, $newStr);
+		// 	}
 			
-		}
-		//novi segment paginacije sa sredjenim get sort parametrom
-		$newPagination = implode("komentari", $d);
+		// }
+		// //novi segment paginacije sa sredjenim get sort parametrom
+		// $newPagination = implode("komentari", $d);
 		//---------
 		
 
-		$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
+		$komentari = $this->komentar_model->vrati_komentare($sortParam,$sortType,$config['per_page'], $page);
 		$data['komentari'] = $komentari;
 		$data['page'] = $page;
-		$data['pagination'] = $newPagination;
+		$data['pagination'] = $pagination;
 		$data['main_content'] = 'admin/admin_komentari';
 
 		//$data['sortType']=$sortType;

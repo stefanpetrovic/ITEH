@@ -2,6 +2,7 @@
 
 class api extends CI_Controller {
 
+
 	function index(){
 		$this->load->view('api/api_documentation');
 	}
@@ -57,9 +58,11 @@ class api extends CI_Controller {
 			$vest = $this->api_model -> vratiVesti(false);
 		}
 
-		// $niz_json = json_encode ($vest);
-		// print($niz_json);
-		var_dump($vest);
+		//returnJSON("vesti", $vest);
+
+		$niz_json = json_encode ($vest);
+		print($niz_json);
+		//var_dump($vest);
 		
 	}
 
@@ -71,6 +74,7 @@ class api extends CI_Controller {
 
 		$komentari = $this->api_model -> vratiKomentare($data);
 
+		{}
 		$niz_json = json_encode ($komentari);
 		print($niz_json);
 		
@@ -79,7 +83,7 @@ class api extends CI_Controller {
 
 	function kategorije(){
 		$kategorije = $this->api_model -> vratiKategorije();
-
+		
 		$niz_json = json_encode ($kategorije);
 		print($niz_json);
 		
@@ -89,6 +93,52 @@ class api extends CI_Controller {
 	function postKomentar(){
 
 	}
+
+	function example(){
+		$this->load->view('api/api_example_form');
+	}
+
+	function example_result(){
+		//primer za poziv apija vesti:
+		$api_uri = base_url().'api/vesti';
+		$parametri = $this->input->post();
+		$p='';
+		foreach ($parametri as $parametar) {
+			$p .= $parametar;
+		}
+
+		if($p!=''){
+			$api_uri .="?";
+		}
+		$parametri_niz = array(); //niz parametara sa vrednostima za implode
+		foreach ($parametri as $key => $value) {
+			if($value != '')
+				$parametri_niz[] = $key."=".$value;
+		}
+		//spajanje uri sa parametrima - konacni uri
+		$api_uri .= implode('&', $parametri_niz);
+		
+
+		echo "<h1>URI trazenog resursa:</h1>";
+		var_dump($api_uri);
+
+
+
+		//poziv apija - cURL
+		$curl = curl_init($api_uri);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_POST, false);
+		$curl_odgovor = curl_exec($curl);
+		curl_close($curl);
+		echo "<h1>JSON odgovor servera:</h1>";
+		var_dump($curl_odgovor);
+		$json_objekat=json_decode($curl_odgovor);
+		echo "<h1>JSON enkodiran objekat:</h1>";
+		var_dump($json_objekat);
+	
+
+	}
+
 }
 
 

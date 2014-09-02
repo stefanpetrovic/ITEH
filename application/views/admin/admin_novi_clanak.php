@@ -17,7 +17,7 @@
       <div class="col-md-9 main-col" id="news-one">
 
         <h2 class="col-md-offset-2">Dodaj novi članak</h2>
-        <form class="form-horizontal" role="form" action="action" method="post">
+        <form class="form-horizontal" role="form" action="<?php echo site_url('admin/dodaj_clanak'); ?>" method="post" enctype="multipart/form-data">
 
           <div class="form-group">
             <label for="heading" class="col-sm-2 control-label"></label>
@@ -39,8 +39,7 @@
           <div class="form-group">
             <label for="fimage" class="col-sm-2 control-label">Featured image</label>
             <div class="col-sm-10">
-
-              <input type="text" class="form-control" id="fimage" name="fimage" value="">
+				<input type="file" id="fimage" name="userfile" title="Search for a file to add">
             </div>
           </div>
           <div class="form-group">
@@ -62,9 +61,9 @@
               <?php foreach ($kategorije as $id => $kategorija): ?>
               <div class='checkbox'>
                 <label>
-                  <input type='checkbox' name='chx' value='<?php echo $kategorija->kategorijaID; ?>'
-                  >
+                  <input type='checkbox' name='chx[]' value='<?php echo $kategorija->kategorijaID; ?>'/>
                   <?php echo $kategorija->naziv;?>
+                 
                 </label>
               </div>        
             <?php endforeach ?>
@@ -90,41 +89,41 @@
 </div> -->
 
 <script type="text/javascript">
-
-$('#submit').click(function(){
-
- var checked = new Array();   
- $("input:checkbox[name=chx]:checked").each(function()
- {
-  checked.push($(this).val());
-});
-
- var form_data = {
-   id: $('#id').val(),
-   naslov: $('#naslov').val(),
-   fimage: $('#fimage').val(),
-   kratki_text: $('#kratki_text').val(),
-   dugi_text: $('#dugi_text').val(),
-   kategorije: checked,
-   ajax: '1'
- };
-
- $.ajax({
-   url: "<?php echo site_url('admin/dodaj_clanak'); ?>",
-   type: 'POST',
-   data: form_data,
-   success: function(msg){
-    $('#dump').append(msg);
-     $('#crud_message').append(msg).show();
-     function hide(){
-       $( "#crud_message" ).fadeOut('slow');
-     }
-     setTimeout(hide,3000);
-  }
-});
-
- return false;
-
+// 
+// $('#submit').click(function(){
+// 
+ // var checked = new Array();   
+ // $("input:checkbox[name=chx]:checked").each(function()
+ // {
+  // checked.push($(this).val());
+// });
+// 
+ // var form_data = {
+   // id: $('#id').val(),
+   // naslov: $('#naslov').val(),
+   // fimage: $('#fimage').val(),
+   // kratki_text: $('#kratki_text').val(),
+   // dugi_text: $('#dugi_text').val(),
+   // kategorije: checked,
+   // ajax: '1'
+ // };
+// 
+ // $.ajax({
+   // url: "<?php echo site_url('admin/dodaj_clanak'); ?>",
+   // type: 'POST',
+   // data: form_data,
+   // success: function(msg){
+    // $('#dump').append(msg);
+     // $('#crud_message').append(msg).show();
+     // function hide(){
+       // $( "#crud_message" ).fadeOut('slow');
+     // }
+     // setTimeout(hide,3000);
+  // }
+// });
+// 
+ // return false;
+// 
 
 });
 

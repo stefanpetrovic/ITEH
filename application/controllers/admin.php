@@ -16,10 +16,10 @@ class admin extends CI_Controller {
 		$config['num_links'] = $num_links;
 
 		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-		$config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-
-		$config['cur_tag_open'] = "<li><span><b>";
-		$config['cur_tag_close'] = "</b></span></li>";
+        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+         
+        $config['cur_tag_open'] = "<li><span><b>";
+        $config['cur_tag_close'] = "</b></span></li>";
 		$this->pagination->initialize($config);
 		return $this->pagination->create_links(); 
 	}
@@ -105,22 +105,54 @@ class admin extends CI_Controller {
 		
 	}
 
+
 	public function dodaj_clanak(){
+		$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '10000';
+		$config['max_width']  = '1924';
+		$config['max_height']  = '1768';
+
+		$this->load->library('upload', $config);
+		
+		$this->upload->do_upload();
+		$imagename = $this->upload->data();
+		
+		$config2['image_library'] = 'gd2';
+		$config2['source_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['file_name'];
+		$config2['new_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['raw_name'] . '2' . $imagename['file_ext'];
+		$config2['create_thumb'] = FALSE;
+		$config2['maintain_ratio'] = FALSE;
+		$config2['x_axis'] = 10;
+		$config2['y_axis'] = 10;
+		$config2['width'] = 500;
+		$config2['height'] = 250;
+
+		$this->load->library('image_lib', $config2);
+		$this->image_lib->crop();
+		
+		
 		$data = array(
 			'datum'			=>  date('Y-m-d h:i:s'),
 			'kratakTekst'	=>  $this->input->post('kratki_text'),
 			'dugiTekst'		=>  $this->input->post('dugi_text'),
 			'naslov'		=>  $this->input->post('naslov'),
-			'featuredImage'	=>  $this->input->post('fimage'),
+			'featuredImage'	=>  'images/' . $imagename['file_name'],
 			'autorID'			=>  '1'
 			);
-
-		$kategorije = $this->input->post('kategorije');
-
+		$chxs = $this->input->post('chx');
+		$kategorije;
+		foreach($chxs as $chx) {
+			$kategorije[] = $chx;
+		}
+		$kat = $this->kategorija_model->vratiKategorije();
+		
+		$dat['kategorije'] = $kat;
 		$this->glavni_model ->dodaj_clanak($data);
 		$newId = $this->db->insert_id();
 		$this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
-		echo "Uspešno ste ubacili članak";
+		$dat['main_content'] = 'admin/admin_novi_clanak';
+		$this->load->view('admin/includes/admin_template', $dat);
 	}
 
 	public function obrisi_clanak(){
@@ -197,45 +229,18 @@ class admin extends CI_Controller {
 
 
 		$sort = $this->input->get('sort');
-		if($sort){
-			$session_data = $this->session->userdata('verified');
-			$session_data['sort']=$sort;
 
-			if($session_data['sortKom']== "descending"){
-				$session_data['sortKom'] = "ascending";
-			} else {
-				$session_data['sortKom'] = "descending";
-			}
-			echo "Sorttype:";
-			var_dump($sort);
-			echo "Sortkom:";
-			var_dump($session_data['sortKom']);
-
-			$this->session->set_userdata("verified", $session_data);
-			$sortType = $session_data['sortKom'];
-			$sortParam = $session_data['sort'];
-
+		//put sort type in session
+		$session_data = $this->session->userdata('verified');
+		
+		if($session_data['sortKom']== "descending"){
+			$session_data['sortKom'] = "ascending";
 		} else {
-			
-			$session_data = $this->session->userdata('verified');
-			
-			$sortType = $session_data['sortKom'];
-			$sortParam = $session_data['sort'];
-
-
-			echo "Sorttype:";
-			var_dump($session_data['sortKom']);
-			echo "Sortkom:";
-			var_dump($session_data['sort']);
+			$session_data['sortKom'] = "descending";
 		}
-	
-		// } else {
-		// 	var_dump("DDDD");
-		// 	$session_data = $this->session->userdata('verified');
-		// 	$session_data['sortKom'] = "descending";
-		// 	$this->session->set_userdata("verified", $session_data);
-		// 	$sortType = $session_data['sortKom'];
-		// }
+		$this->session->set_userdata("verified", $session_data);
+		$sortType = $session_data['sortKom'];
+
 
 
 
@@ -252,36 +257,36 @@ class admin extends CI_Controller {
 		$config['enable_query_string'] = TRUE;
 
 		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-		$config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-
-		$config['cur_tag_open'] = "<li><span><b>";
-		$config['cur_tag_close'] = "</b></span></li>";
+        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+         
+        $config['cur_tag_open'] = "<li><span><b>";
+        $config['cur_tag_close'] = "</b></span></li>";
 
 		$this->pagination->initialize($config);
 		$pagination = $this->pagination->create_links();
 
 		//dodavanje get parametra sort u linkove //
-		// $p = preg_split("[komentari]",$pagination);
-		// $d = array();
-
-		// foreach ($p as $value) {
-		// 	if (strpos($value, "<li") === 0){
-		// 		array_push($d, $value);
-		// 	} else {
-		// 		$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
-		// 		array_push($d, $newStr);
-		// 	}
+		$p = preg_split("[komentari]",$pagination);
+		$d = array();
+	
+		foreach ($p as $value) {
+			if (strpos($value, "<li") === 0){
+				array_push($d, $value);
+			} else {
+				$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+			array_push($d, $newStr);
+			}
 			
-		// }
-		// //novi segment paginacije sa sredjenim get sort parametrom
-		// $newPagination = implode("komentari", $d);
+		}
+		//novi segment paginacije sa sredjenim get sort parametrom
+		$newPagination = implode("komentari", $d);
 		//---------
 		
 
-		$komentari = $this->komentar_model->vrati_komentare($sortParam,$sortType,$config['per_page'], $page);
+		$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
 		$data['komentari'] = $komentari;
 		$data['page'] = $page;
-		$data['pagination'] = $pagination;
+		$data['pagination'] = $newPagination;
 		$data['main_content'] = 'admin/admin_komentari';
 
 		//$data['sortType']=$sortType;

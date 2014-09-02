@@ -2,9 +2,16 @@
 
 class glavni_model extends CI_model {
 
-	function dodaj_korisnika($data) {
-		$this -> db -> insert('korisnik', $data);
-		return;
+	function dodaj_korisnika($username, $password, $email) {
+		$this->db->set('username', $username);
+		$this->db->set('password', $password);
+		$this->db->set('email', $email);
+		$this->db->set('brKomentara', 0);
+		$this->db->set('nivoPrivilegija', 1);
+		$this->db->set('state', 0);
+		
+		$this->db->insert('korisnik');
+		return true;
 	}
 
 	function korisnik_postoji($ime, $sifra)//ako ti vise odgovara, mogu da promenim da uradim sa nizom
@@ -44,14 +51,31 @@ class glavni_model extends CI_model {
 			return false;
 		}
 	}
+	
+	function proveriEmail($email) {
+		$this->db->from('korisnik');
+		$this->db->where('email', $email);
+		$query = $this->db->get();
+		if($query -> num_rows() == 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
-	function clanci_za_kat($naziv, $offset) {
+	function clanci_za_kat($kategorijaID, $offset) {
+		$this -> db -> where('kategorijaID', $kategorijaID);
+		$this -> db -> from('clanakkategorija');
+		$brojRezultata = $this->db->count_all_results();
+		
+		$this->db->flush_cache();
+		
 		$this -> db -> select('clanak.clanakID as clanakID, datum, kratakTekst, dugiTekst, naslov, autorID, korisnikID, username,  featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('clanakkategorija', 'clanak.clanakID = clanakkategorija.clanakID');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
-		$this -> db -> join('kategorija', 'clanakkategorija.kategorijaID = kategorija.kategorijaID');
-		$this -> db -> where('kategorija.naziv', $naziv);
+		$this -> db -> where('clanakkategorija.kategorijaID', $kategorijaID);
+		$this -> db -> order_by('datum', 'desc');
 		$this -> db -> limit(10, $offset * 10);
 		$query = $this -> db -> get();
 
@@ -59,6 +83,7 @@ class glavni_model extends CI_model {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
 			}
+			$data[]	= $brojRezultata;
 			return $data;
 		} else {
 			return false;
@@ -122,6 +147,8 @@ class glavni_model extends CI_model {
 			} else {
 				$whereClause = "1 = 1";
 			}
+			
+			$whereClause .= ' AND clanak.clanakID != ' . $idClanka;
 
 			$this -> db -> select('clanak.clanakID as clanakID, naslov, username, autorID, featuredImage, brojPregleda');
 			$this -> db -> from('clanak');
@@ -130,7 +157,7 @@ class glavni_model extends CI_model {
 			$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 			$this -> db -> where($whereClause, null, false);
 			$this -> db -> order_by('brojPregleda', 'desc');
-			$this -> db -> limit(5);
+			$this -> db -> limit(4);
 
 			$query = $this -> db -> get();
 
@@ -189,6 +216,10 @@ class glavni_model extends CI_model {
 	}
 
 	function najnovijiClanciZaMix($limit, $offset) {
+		$this -> db -> from('clanak');
+		$brojRezultata = $this->db->count_all_results();
+		$this->db->flush_cache();
+		
 		$this -> db -> select('clanakID, naslov, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> limit($limit, $offset);
@@ -200,6 +231,7 @@ class glavni_model extends CI_model {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
 			}
+			$data[] = $brojRezultata;
 			return $data;
 		} else {
 			return false;
@@ -230,13 +262,32 @@ class glavni_model extends CI_model {
 	}
 
 	function clanciPoAutoru($autorID, $offset) {
+		$this -> db -> where('autorID', $autorID);
+		$this -> db -> from('clanak');
+		$brojRezultata = $this->db->count_all_results();
+		$this->db->flush_cache();
+		
 		$this -> db -> select('clanakID, datum, kratakTekst, naslov, username, korisnikID, featuredImage, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
 		$this -> db -> where('autorID', $autorID);
+		$this -> db -> order_by('datum', 'desc');
 		$this -> db -> limit(10, $offset * 10);
 		$query = $this -> db -> get();
 
+		if ($query -> num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			$data[] = $brojRezultata;
+			return $data;
+		} else {
+			return false;
+		}
+	}
+
+	function vratiKategorije() {
+		$query = $this -> db -> get('kategorija', 10, 0);
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
@@ -246,13 +297,39 @@ class glavni_model extends CI_model {
 			return false;
 		}
 	}
-
-	function vratiKategorije() {
-		$query = $this -> db -> get('kategorija', 10, 2);
+	
+	function pretraziClankePoKljucnojReci($kljucnaRec, $kategorijaID, $offset) {
+		$this->db->distinct();
+		if ($kategorijaID != 0) {
+			$this->db->where('clanakkategorija.kategorijaID', $kategorijaID);
+		}
+		$this->db->like('naslov', $kljucnaRec);
+		$this->db->like('kratakTekst', $kljucnaRec);
+		$this->db->from('clanak');
+		$this->db->join('clanakkategorija', 'clanak.clanakID = clanakkategorija.clanakID');
+		
+		$brojRezultata = $this->db->count_all_results();
+		
+		$this->db->flush_cache();
+		
+		$this->db->select('clanak.clanakID, datum, kratakTekst, naslov, username, korisnikID, featuredImage, brojPregleda');
+		$this->db->distinct();
+		$this->db->from('clanak');
+		$this->db->join('clanakkategorija', 'clanak.clanakID = clanakkategorija.clanakID');
+		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
+		if ($kategorijaID != 0) {
+			$this->db->where('clanakkategorija.kategorijaID', $kategorijaID);
+		}
+		$this->db->like('naslov', $kljucnaRec);
+		$this->db->like('kratakTekst', $kljucnaRec);
+		$this -> db -> order_by('datum', 'desc');
+		$this->db->limit(10, $offset * 10);
+		$query = $this->db->get();
 		if ($query -> num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
 			}
+			$data[] = $brojRezultata;
 			return $data;
 		} else {
 			return false;

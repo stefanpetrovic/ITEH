@@ -51,6 +51,7 @@ class api extends CI_Controller {
 			'num'			=>  $this->input->get('num'),
 			'kategorije'	=>  $this->input->get('kategorije')		
 			);
+		
 
 		if($this->input->get()){
 			$vest = $this->api_model -> vratiVesti($data);
@@ -102,6 +103,7 @@ class api extends CI_Controller {
 		//primer za poziv apija vesti:
 		$api_uri = base_url().'api/vesti';
 		$parametri = $this->input->post();
+		var_dump($parametri);
 		$p='';
 		foreach ($parametri as $parametar) {
 			$p .= $parametar;

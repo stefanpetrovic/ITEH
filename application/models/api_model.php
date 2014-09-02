@@ -72,6 +72,7 @@ class api_model extends CI_model {
 	}
 
 	function vratiVesti($data){
+		//var_dump($data);
 		$this -> db -> select('clanakID,datum,kratakTekst, dugiTekst, naslov, username, brojPregleda');
 		$this -> db -> from('clanak');
 		$this -> db -> join('korisnik', 'clanak.autorID = korisnik.korisnikID');
@@ -87,19 +88,20 @@ class api_model extends CI_model {
 				$this -> db -> or_where('username', $author);
 			}
 			
-		} elseif ($heading = $data['heading']) {
+		} if ($heading = $data['heading']) {
 			$headings = array_map('trim', explode(',', $heading));
 			foreach ($headings as $heading) {
 				$this ->db -> like('naslov', $heading);
 			}
-		} elseif ($text = $data['text']) {
+		} if ($text = $data['text']) {
 			$words = array_map('trim', explode(',', $text));
 			foreach ($words as $word) {
+				//var_dump($word);
 				$this ->db -> like('kratakTekst', $word);
 				$this ->db -> or_like('dugiTekst', $word);
 			}
 			
-		} elseif ($limit = $data['num']) {
+		} if ($limit = $data['num']) {
 			$this->db->limit($limit);
 		}
 

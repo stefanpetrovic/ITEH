@@ -15,7 +15,7 @@ class Login extends CI_Controller {
 			$this -> session -> set_userdata($data);
 			redirect('site');
 		} else {
-			echo "Pogresno ime ili sifra! Kliknite <a href=\"../login\"> ovde </a> za povratak na prethodnu stranu.";
+			echo "Pogresno ime ili sifra! Kliknite <a href=\"../site/logovanje\"> ovde </a> za povratak na prethodnu stranu.";
 		}
 
 	}

@@ -67,6 +67,7 @@
 						if ($korisnik['nivoPrivilegija'] == 2) {
 							echo ' <a href="' . base_url() . '/admin">ovde</a> mozete pristupiti admin panelu.';
 						}
+						echo '<a href="' . base_url() . 'site/logout">Logout</a>';
         			}else {
         				echo 'Niste ulogovani, <a href="' . base_url() . 'site/logovanje">ovde</a> se mozete ulogovati.';
         			}

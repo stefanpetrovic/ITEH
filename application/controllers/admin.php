@@ -7,6 +7,14 @@ class admin extends CI_Controller {
 		num_links: number of pagination options
 	return: initialized pagination;
 */
+	public function __construct() {
+		parent::__construct();
+		
+		if (!$this -> session -> userdata('daliulogovan')) {
+			redirect('/site/logovanje', 'refresth');
+		}
+	}
+
 	function admin_pagination($url, $total_rows, $records_per_page, $num_links){
 		$this->load->library('pagination');
 
@@ -25,80 +33,95 @@ class admin extends CI_Controller {
 	}
 
 	public function index (){
-		$data['main_content'] ='admin/admin_index';
-		
-		$this->load->view('admin/includes/admin_template', $data);
+		if ($this -> session -> userdata('daliulogovan')) {
+			$data['main_content'] ='admin/admin_index';
+			$this->load->view('admin/includes/admin_template', $data);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 	}
 
 	public function clanci(){
 		// pagination 
-		$page = $this->uri->segment(3);
+		if ($this -> session -> userdata('daliulogovan')) {
+			$page = $this->uri->segment(3);
 
-		$num_rows = $this->db->get('clanak')->num_rows();
-		$per_page = 5;
-		$pagination = $this->admin_pagination('admin/clanci', $num_rows, $per_page, 7);
-		$pagination = $this->pagination->create_links();
+			$num_rows = $this->db->get('clanak')->num_rows();
+			$per_page = 5;
+			$pagination = $this->admin_pagination('admin/clanci', $num_rows, $per_page, 7);
+			$pagination = $this->pagination->create_links();
+			
+			$najcitanijiClanci = $this->glavni_model->clanci_po_datumu($per_page,$page);
 		
-		$najcitanijiClanci = $this->glavni_model->clanci_po_datumu($per_page,$page);
-		
-		$data['najcitanijiClanci'] = $najcitanijiClanci;
-		$data['main_content'] = 'admin/admin_clanci';
-		$data['page'] = $page;
-		$data['pagination'] = $pagination;
-		$this->load->view('admin/includes/admin_template', $data);
+			$data['najcitanijiClanci'] = $najcitanijiClanci;
+			$data['main_content'] = 'admin/admin_clanci';
+			$data['page'] = $page;
+			$data['pagination'] = $pagination;
+			$this->load->view('admin/includes/admin_template', $data);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 	}
 
 	public function clanakedit(){
-		$id = $this->input->get('id');
-		$kat = $this->kategorija_model->vratiKategorije();
-		
-		if($id != false){
-			$article = $this->glavni_model->vratiClanakZaID($id);
-			$data['article'] = $article;
-			$data['kategorije'] = $kat;
-			$data['main_content'] = 'admin/admin_clanak_edit';
-			$this->load->view('admin/includes/admin_template', $data);
-		} else {
-			echo "error";
+		if ($this -> session -> userdata('daliulogovan')) {
+			$id = $this->input->get('id');
+			$kat = $this->kategorija_model->vratiKategorije();
+			
+			if($id != false){
+				$article = $this->glavni_model->vratiClanakZaID($id);
+				$data['article'] = $article;
+				$data['kategorije'] = $kat;
+				$data['main_content'] = 'admin/admin_clanak_edit';
+				$this->load->view('admin/includes/admin_template', $data);
+			} else {
+				echo "error";
+			}
+		}else {
+			redirect('/site/logovanje', 'refresth');
 		}
-
 	}
 
 	public function noviclanak(){
-		$kat = $this->kategorija_model->vratiKategorije();
-		
-		$data['kategorije'] = $kat;
-		$data['main_content']= 'admin/admin_novi_clanak';
-		$this->load->view('admin/includes/admin_template', $data);
-
+		if ($this -> session -> userdata('daliulogovan')) {
+			$kat = $this->kategorija_model->vratiKategorije();
+			
+			$data['kategorije'] = $kat;
+			$data['main_content']= 'admin/admin_novi_clanak';
+			$this->load->view('admin/includes/admin_template', $data);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 		
 	}
 
 	public function edit_clanak(){
 		//vrsi editovanje clanka
-
-		$data = array(
-			'id'			=>  $this->input->post('id'),
-			'datum'			=>  $this->input->post('datum'),
-			'kratakTekst'	=>  $this->input->post('kratki_text'),
-			'dugiTekst'		=>  $this->input->post('dugi_text'),
-			'naslov'		=>  $this->input->post('naslov'),
-			'featuredImage'	=>  $this->input->post('fimage'),
-			);
-
-		$kategorije = $this->input->post('kategorije');
-
-		
-
-		$this->glavni_model ->izmeni_clanak($data);
-		$this->kategorija_model->ukloniKategorijeZaClanak($data['id']);
-		$this->kategorija_model->ubaciKategorijeZaClanak($data['id'],$kategorije);
-
-		echo "Uspešno ste izmenili članak";
-// 		ukloniKategorijeZaClanak($clanakID)
-		// var_dump($data);
-		// var_dump($kategorije);
-
+		if ($this -> session -> userdata('daliulogovan')) {
+			$data = array(
+				'id'			=>  $this->input->post('id'),
+				'datum'			=>  $this->input->post('datum'),
+				'kratakTekst'	=>  $this->input->post('kratki_text'),
+				'dugiTekst'		=>  $this->input->post('dugi_text'),
+				'naslov'		=>  $this->input->post('naslov'),
+				'featuredImage'	=>  $this->input->post('fimage'),
+				);
+	
+			$kategorije = $this->input->post('kategorije');
+	
+			
+	
+			$this->glavni_model ->izmeni_clanak($data);
+			$this->kategorija_model->ukloniKategorijeZaClanak($data['id']);
+			$this->kategorija_model->ubaciKategorijeZaClanak($data['id'],$kategorije);
+	
+			echo "Uspešno ste izmenili članak";
+	// 		ukloniKategorijeZaClanak($clanakID)
+			// var_dump($data);
+			// var_dump($kategorije);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 
 
 		
@@ -107,93 +130,104 @@ class admin extends CI_Controller {
 
 
 	public function dodaj_clanak(){
-		$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '10000';
-		$config['max_width']  = '1924';
-		$config['max_height']  = '1768';
-
-		$this->load->library('upload', $config);
-		
-		$this->upload->do_upload();
-		$imagename = $this->upload->data();
-		
-		$config2['image_library'] = 'gd2';
-		$config2['source_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['file_name'];
-		$config2['new_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['raw_name'] . '2' . $imagename['file_ext'];
-		$config2['create_thumb'] = FALSE;
-		$config2['maintain_ratio'] = FALSE;
-		$config2['x_axis'] = 10;
-		$config2['y_axis'] = 10;
-		$config2['width'] = 500;
-		$config2['height'] = 250;
-
-		$this->load->library('image_lib', $config2);
-		$this->image_lib->crop();
-		
-		
-		$data = array(
-			'datum'			=>  date('Y-m-d h:i:s'),
-			'kratakTekst'	=>  $this->input->post('kratki_text'),
-			'dugiTekst'		=>  $this->input->post('dugi_text'),
-			'naslov'		=>  $this->input->post('naslov'),
-			'featuredImage'	=>  'images/' . $imagename['file_name'],
-			'autorID'			=>  '1'
+		if ($this -> session -> userdata('daliulogovan')) {
+			$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$config['max_size']	= '10000';
+			$config['max_width']  = '1924';
+			$config['max_height']  = '1768';
+	
+			$this->load->library('upload', $config);
+			
+			$this->upload->do_upload();
+			$imagename = $this->upload->data();
+			
+			$config2['image_library'] = 'gd2';
+			$config2['source_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['file_name'];
+			$config2['new_image'] = $_SERVER['DOCUMENT_ROOT'] . 'ITEH/images/' . $imagename['raw_name'] . '2' . $imagename['file_ext'];
+			$config2['create_thumb'] = FALSE;
+			$config2['maintain_ratio'] = FALSE;
+			$config2['x_axis'] = 10;
+			$config2['y_axis'] = 10;
+			$config2['width'] = 500;
+			$config2['height'] = 250;
+	
+			$this->load->library('image_lib', $config2);
+			$this->image_lib->crop();
+			
+			
+			$data = array(
+				'datum'			=>  date('Y-m-d h:i:s'),
+				'kratakTekst'	=>  $this->input->post('kratki_text'),
+				'dugiTekst'		=>  $this->input->post('dugi_text'),
+				'naslov'		=>  $this->input->post('naslov'),
+				'featuredImage'	=>  'images/' . $imagename['file_name'],
+				'autorID'			=>  '1'
 			);
-		$chxs = $this->input->post('chx');
-		$kategorije;
-		foreach($chxs as $chx) {
-			$kategorije[] = $chx;
+			$chxs = $this->input->post('chx');
+			$kategorije;
+			foreach($chxs as $chx) {
+				$kategorije[] = $chx;
+			}
+			$kat = $this->kategorija_model->vratiKategorije();
+			
+			$dat['kategorije'] = $kat;
+			$this->glavni_model ->dodaj_clanak($data);
+			$newId = $this->db->insert_id();
+			$this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
+			$dat['main_content'] = 'admin/admin_novi_clanak';
+			$this->load->view('admin/includes/admin_template', $dat);
+		}else {
+			redirect('/site/logovanje', 'refresth');
 		}
-		$kat = $this->kategorija_model->vratiKategorije();
-		
-		$dat['kategorije'] = $kat;
-		$this->glavni_model ->dodaj_clanak($data);
-		$newId = $this->db->insert_id();
-		$this->kategorija_model->ubaciKategorijeZaClanak($newId,$kategorije);
-		$dat['main_content'] = 'admin/admin_novi_clanak';
-		$this->load->view('admin/includes/admin_template', $dat);
 	}
 
 	public function obrisi_clanak(){
-		
-		$id = $this->uri->segment(3);
-
-		$this->glavni_model ->obrisi_clanak($id);
-		echo "Uspešno ste obrisali članak";
-
-
+		if ($this -> session -> userdata('daliulogovan')) {
+			$id = $this->uri->segment(3);
+	
+			$this->glavni_model ->obrisi_clanak($id);
+			echo "Uspešno ste obrisali članak";
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 	}
 
 
 	public function kategorije(){
-		// pagination 
-		$page = $this->uri->segment(3);
-		
-		$num_rows = $this->db->get('kategorija')->num_rows();
-		$per_page = 5;
-		$pagination = $this->admin_pagination('admin/kategorije', $num_rows, $per_page, 7);
-		$pagination = $this->pagination->create_links();
-
-
-		$kategorije = $this->kategorija_model->vratiKateg($per_page,$page);
-		
-		$data['kategorije'] = $kategorije;
-		//var_dump($data);
-		$data['page'] = $page;
-		$data['pagination'] = $pagination;
-		$data['main_content'] = 'admin/admin_kategorije';
-		$this->load->view('admin/includes/admin_template', $data);
+		if ($this -> session -> userdata('daliulogovan')) {
+			// pagination 
+			$page = $this->uri->segment(3);
+			
+			$num_rows = $this->db->get('kategorija')->num_rows();
+			$per_page = 5;
+			$pagination = $this->admin_pagination('admin/kategorije', $num_rows, $per_page, 7);
+			$pagination = $this->pagination->create_links();
+	
+	
+			$kategorije = $this->kategorija_model->vratiKateg($per_page,$page);
+			
+			$data['kategorije'] = $kategorije;
+			//var_dump($data);
+			$data['page'] = $page;
+			$data['pagination'] = $pagination;
+			$data['main_content'] = 'admin/admin_kategorije';
+			$this->load->view('admin/includes/admin_template', $data);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 	}
 
 
 	public function obrisi_kategoriju(){
-		
-		$id = $this->uri->segment(3);
-
-		$this->kategorija_model  ->obrisi_kategoriju($id);
-		echo "Uspešno ste obrisali kategoriju";
-
+		if ($this -> session -> userdata('daliulogovan')) {
+			$id = $this->uri->segment(3);
+	
+			$this->kategorija_model  ->obrisi_kategoriju($id);
+			echo "Uspešno ste obrisali kategoriju";
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 
 	}
 
@@ -225,72 +259,73 @@ class admin extends CI_Controller {
 
 
 	public function komentari(){
-
-
-
-		$sort = $this->input->get('sort');
-
-		//put sort type in session
-		$session_data = $this->session->userdata('verified');
-		
-		if($session_data['sortKom']== "descending"){
-			$session_data['sortKom'] = "ascending";
-		} else {
-			$session_data['sortKom'] = "descending";
-		}
-		$this->session->set_userdata("verified", $session_data);
-		$sortType = $session_data['sortKom'];
-
-
-
-
-		// pagination 
-		$page = $this->uri->segment(3);
-
-		$this->load->library('pagination');
-
-		$config['base_url'] = base_url().'admin/komentari';
-		$config['total_rows'] = $this->db->get('komentar')->num_rows();
-		$config['per_page'] = 5;
-		$config['num_links'] = 7;
-		//$config['page_query_string'] = TRUE;
-		$config['enable_query_string'] = TRUE;
-
-		$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
-        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
-         
-        $config['cur_tag_open'] = "<li><span><b>";
-        $config['cur_tag_close'] = "</b></span></li>";
-
-		$this->pagination->initialize($config);
-		$pagination = $this->pagination->create_links();
-
-		//dodavanje get parametra sort u linkove //
-		$p = preg_split("[komentari]",$pagination);
-		$d = array();
+		if ($this -> session -> userdata('daliulogovan')) {
+			$sort = $this->input->get('sort');
 	
-		foreach ($p as $value) {
-			if (strpos($value, "<li") === 0){
-				array_push($d, $value);
-			} else {
-				$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
-			array_push($d, $newStr);
-			}
+			//put sort type in session
+			$session_data = $this->session->userdata('verified');
 			
-		}
-		//novi segment paginacije sa sredjenim get sort parametrom
-		$newPagination = implode("komentari", $d);
-		//---------
+			if($session_data['sortKom']== "descending"){
+				$session_data['sortKom'] = "ascending";
+			} else {
+				$session_data['sortKom'] = "descending";
+			}
+			$this->session->set_userdata("verified", $session_data);
+			$sortType = $session_data['sortKom'];
+	
+	
+	
+	
+			// pagination 
+			$page = $this->uri->segment(3);
+	
+			$this->load->library('pagination');
+	
+			$config['base_url'] = base_url().'admin/komentari';
+			$config['total_rows'] = $this->db->get('komentar')->num_rows();
+			$config['per_page'] = 5;
+			$config['num_links'] = 7;
+			//$config['page_query_string'] = TRUE;
+			$config['enable_query_string'] = TRUE;
+	
+			$config['first_tag_open'] = $config['last_tag_open'] = $config['next_tag_open'] = $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+	        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+	         
+	        $config['cur_tag_open'] = "<li><span><b>";
+	        $config['cur_tag_close'] = "</b></span></li>";
+	
+			$this->pagination->initialize($config);
+			$pagination = $this->pagination->create_links();
+	
+			//dodavanje get parametra sort u linkove //
+			$p = preg_split("[komentari]",$pagination);
+			$d = array();
 		
-
-		$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
-		$data['komentari'] = $komentari;
-		$data['page'] = $page;
-		$data['pagination'] = $newPagination;
-		$data['main_content'] = 'admin/admin_komentari';
-
-		//$data['sortType']=$sortType;
-		$this->load->view('admin/includes/admin_template', $data);
+			foreach ($p as $value) {
+				if (strpos($value, "<li") === 0){
+					array_push($d, $value);
+				} else {
+					$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+				array_push($d, $newStr);
+				}
+				
+			}
+			//novi segment paginacije sa sredjenim get sort parametrom
+			$newPagination = implode("komentari", $d);
+			//---------
+			
+	
+			$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
+			$data['komentari'] = $komentari;
+			$data['page'] = $page;
+			$data['pagination'] = $newPagination;
+			$data['main_content'] = 'admin/admin_komentari';
+	
+			//$data['sortType']=$sortType;
+			$this->load->view('admin/includes/admin_template', $data);
+		}else {
+			redirect('/site/logovanje', 'refresth');
+		}
 	}
 
 	public function odobrikomentar($id){

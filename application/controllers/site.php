@@ -119,6 +119,14 @@ class Site extends CI_Controller {
 		}
 		echo false;
 	}
+	
+	public function logout() {
+		$this->session->sess_destroy();
+		$data['menu_items'] = $this -> menu_items;
+		$data['korisnik'] = $this -> korisnik;
+		$data['main_content'] = "login-korisnika";
+		$this -> load -> view('includes/template', $data);
+	}
 
 	public function vest($idVesti) {
 		$ipAdresa = $_SERVER['REMOTE_ADDR'];

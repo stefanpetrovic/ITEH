@@ -160,6 +160,7 @@ var edit;
 $('.editer').click(function(){
   var valueH = $(this).closest('tr').find('.headd').text();
   edit = $(this).closest('tr').attr('id');
+  alert(edit);
   edit = edit.substring(2, edit.length);
   $('#myModal').find('#name').val(valueH);
  // $('#myModal').find('#id_edit').val(edit);

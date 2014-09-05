@@ -155,14 +155,13 @@ class admin extends CI_Controller {
 			$this->load->library('image_lib', $config2);
 			$this->image_lib->crop();
 			
-			
 			$data = array(
 				'datum'			=>  date('Y-m-d h:i:s'),
 				'kratakTekst'	=>  $this->input->post('kratki_text'),
 				'dugiTekst'		=>  $this->input->post('dugi_text'),
 				'naslov'		=>  $this->input->post('naslov'),
 				'featuredImage'	=>  'images/' . $imagename['file_name'],
-				'autorID'			=>  '1'
+				'autorID'			=>  '2'
 			);
 			$chxs = $this->input->post('chx');
 			$kategorije;

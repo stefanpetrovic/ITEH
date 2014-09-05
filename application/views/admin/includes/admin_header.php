@@ -22,7 +22,7 @@ $this->load->view('admin/head.php');
       <span class="icon-bar"></span>
     </button>
 
-    <a href="#"><img src="<?php echo base_url();?>images/logo.png" style="width: 100%;"></a>
+    <a href="<?php echo base_url()."/site";?>"><img src="<?php echo base_url();?>images/logo.png" style="width: 100%;"></a>
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->

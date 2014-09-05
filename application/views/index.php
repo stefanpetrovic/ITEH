@@ -15,7 +15,7 @@
 		echo '<div class="col-md-12 naslov">';
 		echo '<p>';
 		echo '<a class="naslov" href="' . base_url() . 'site/vest/' . $clanak->clanakID . '">';
-		echo substr($clanak->naslov, 0, 100) . '...';
+		echo substr($clanak->naslov, 0, 40) . '...';
 		echo '</a>';
 		echo '</p>';
 		echo '</div>';

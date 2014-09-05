@@ -6,21 +6,21 @@
   	</div class="row" style="height: 50px;">
   		<div class="col-md-3">
   			<?php
-  				$url = "http://football-api.com/api/?Action=standings&APIKey=41a8bfcd-3790-8d64-5f6e95a6c7ab&comp_id=1204";
-				$curl = curl_init($url);
-				curl_setopt($curl, CURLOPT_PROXY, 'proxy.rcub.bg.ac.rs:8080');
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-				$curl_odgovor = curl_exec($curl);
-				curl_close($curl);
-				//echo $curl_odgovor;
-				$foundMatches = json_decode($curl_odgovor, true);
-				//eho $foundMatches['teams'][0]['stand_team_name'];
+  		// 		$url = "http://football-api.com/api/?Action=standings&APIKey=41a8bfcd-3790-8d64-5f6e95a6c7ab&comp_id=1204";
+				// $curl = curl_init($url);
+				// curl_setopt($curl, CURLOPT_PROXY, 'proxy.rcub.bg.ac.rs:8080');
+				// curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				// curl_setopt($curl, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+				// $curl_odgovor = curl_exec($curl);
+				// curl_close($curl);
+				
+				// $foundMatches = json_decode($curl_odgovor, true);
+				
 	?> 
   			Stanje u Engleskoj Premijer ligi: <br /> 
-  			Prvi na tabeli: <?php echo $foundMatches['teams'][0]['stand_team_name'];?><br />
-  			Drugi na tabeli: <?php echo $foundMatches['teams'][1]['stand_team_name'];?><br />
-  			Treci na tabeli: <?php echo $foundMatches['teams'][2]['stand_team_name'];?><br />
+  			Prvi na tabeli: <?php //echo $foundMatches['teams'][0]['stand_team_name'];?><br />
+  			Drugi na tabeli: <?php //echo $foundMatches['teams'][1]['stand_team_name'];?><br />
+  			Treci na tabeli: <?php //echo $foundMatches['teams'][2]['stand_team_name'];?><br />
   		</div>
   		<div class="col-md-6">
   			<p style="text-align: center;">Stef, Marko & Petar ®</p>

@@ -47,9 +47,9 @@ class admin extends CI_Controller {
 			$page = $this->uri->segment(3);
 
 			$num_rows = $this->db->get('clanak')->num_rows();
-			$per_page = 5;
+			$per_page = 12;
 			$pagination = $this->admin_pagination('admin/clanci', $num_rows, $per_page, 7);
-			$pagination = $this->pagination->create_links();
+			//$pagination = $this->pagination->create_links();
 			
 			$najcitanijiClanci = $this->glavni_model->clanci_po_datumu($per_page,$page);
 		
@@ -154,6 +154,12 @@ class admin extends CI_Controller {
 	
 			$this->load->library('image_lib', $config2);
 			$this->image_lib->crop();
+
+			if($this -> session -> userdata('idKorisnika')){
+				$idAutora = $this -> session -> userdata('idKorisnika');
+			} else {
+				$idAutora = 1;
+			}
 			
 			$data = array(
 				'datum'			=>  date('Y-m-d h:i:s'),
@@ -161,7 +167,7 @@ class admin extends CI_Controller {
 				'dugiTekst'		=>  $this->input->post('dugi_text'),
 				'naslov'		=>  $this->input->post('naslov'),
 				'featuredImage'	=>  'images/' . $imagename['file_name'],
-				'autorID'			=>  '2'
+				'autorID'			=>  $idAutora.""
 			);
 			$chxs = $this->input->post('chx');
 			$kategorije;
@@ -199,7 +205,7 @@ class admin extends CI_Controller {
 			$page = $this->uri->segment(3);
 			
 			$num_rows = $this->db->get('kategorija')->num_rows();
-			$per_page = 5;
+			$per_page = 15;
 			$pagination = $this->admin_pagination('admin/kategorije', $num_rows, $per_page, 7);
 			$pagination = $this->pagination->create_links();
 	
@@ -282,7 +288,7 @@ class admin extends CI_Controller {
 	
 			$config['base_url'] = base_url().'admin/komentari';
 			$config['total_rows'] = $this->db->get('komentar')->num_rows();
-			$config['per_page'] = 5;
+			$config['per_page'] = 20;
 			$config['num_links'] = 7;
 			//$config['page_query_string'] = TRUE;
 			$config['enable_query_string'] = TRUE;
@@ -304,7 +310,8 @@ class admin extends CI_Controller {
 				if (strpos($value, "<li") === 0){
 					array_push($d, $value);
 				} else {
-					$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
+					$newStr = "";
+					//$newStr = substr_replace($value, '?sort='.$sort, strpos($value, "\""), 0);
 				array_push($d, $newStr);
 				}
 				
@@ -313,7 +320,7 @@ class admin extends CI_Controller {
 			$newPagination = implode("komentari", $d);
 			//---------
 			
-	
+		
 			$komentari = $this->komentar_model->vrati_komentare($sort,$sortType,$config['per_page'], $page);
 			$data['komentari'] = $komentari;
 			$data['page'] = $page;

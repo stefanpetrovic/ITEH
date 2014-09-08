@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sportske vesti</title>
     
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Bootstrap -->
     <link href="<?php echo base_url();?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url();?>css/custom-frontend.css" rel="stylesheet">
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -26,9 +26,9 @@
 		<div class="col-md-9">
 			<!-- Header -->
       <div class="row">
-        <div class="col-xs-3" style="height: 150px; background-image: url('<?php echo base_url()?>images/logo.png'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">
+        <a href="<?php echo base_url()."site/index/0";?>"><div class="col-xs-3" style="height: 150px; background-image: url('<?php echo base_url()?>images/logo.png'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">
           
-        </div>
+        </div></a>
         <div class="col-xs-9" style="height: 150px; background-image: url('<?php echo base_url()?>images/banner.png'); background-repeat: no-repeat; background-size: 100% 100%; background-origin: border-box;">
           
         </div>
@@ -65,7 +65,7 @@
         			if ($korisnik['ulogovan']) {
         				echo "Dobrodosli " . $korisnik['username'];
 						if ($korisnik['nivoPrivilegija'] == 2) {
-							echo ' <a href="' . base_url() . '/admin">ovde</a> mozete pristupiti admin panelu.';
+							echo ' <a href="' . base_url() . 'admin">ovde</a> mozete pristupiti admin panelu.';
 						}
 						echo '<a href="' . base_url() . 'site/logout">Logout</a>';
         			}else {

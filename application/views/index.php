@@ -168,7 +168,7 @@
 				<div class="row" style="margin: 0px;">
 						<div class="col-md-12" style="height: 160px;"></div>
 				</div>
-				<div class="row naslovPozadina" style="height: 60px;  margin: 0px;">
+				<div class="row naslovPozadina" style="height: 55px;  margin: 0px;">
 					<div class="col-md-8 naslov">
 						<p style="padding: 5px;">
 							<a class="naslov"href="<?php echo base_url() . 'site/vest/' . $clanak->clanakID;?>">

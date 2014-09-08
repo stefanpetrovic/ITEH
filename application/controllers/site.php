@@ -122,6 +122,7 @@ class Site extends CI_Controller {
 	
 	public function logout() {
 		$this->session->sess_destroy();
+		$this->ulogovan();
 		$data['menu_items'] = $this -> menu_items;
 		$data['korisnik'] = $this -> korisnik;
 		$data['main_content'] = "login-korisnika";

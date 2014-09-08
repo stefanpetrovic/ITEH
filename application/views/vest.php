@@ -1,11 +1,15 @@
 <!-- Container za sadrzaj glavno dela strane -->
 <div class="row">
 
+
 	<?php 
 		
 		if ($clanak) {
 			
 			$clanak = $clanak[0][0];
+			$clanakIDd = $clanak->clanakID;
+
+
 			//$clanak = $clanak[0];
 			
 			//var_dump($clanak[0]);
@@ -139,7 +143,7 @@
 				<div class="row" >
 						<div class="col-md-12" style="height: 160px;"></div>
 				</div>
-				<div class="row naslovPozadina" style="height: 60px;">
+				<div class="row naslovPozadina" style="height: 55px; margin: 0px;">
 					<div class="col-md-8 naslov">
 						<p style="padding: 5px;">
 							<a class="naslov"href="<?php echo base_url() . 'site/vest/' . $clanak->clanakID;?>">
@@ -209,7 +213,7 @@
 			var podaci = {
 				sadrzajKomentara : $('#sadrzajKomentara').val(),
 				korisnikID: '<?php if ($korisnik['ulogovan']) echo $korisnik['idKorisnika']; else echo -1;?>', 
-				clanakID: '<?php echo $clanak->clanakID; ?>'
+				clanakID: '<?php echo $clanakIDd; ?>'
 			};
 			$.ajax({
 				url: "<?php echo site_url('site/ostaviKomentar')?>",

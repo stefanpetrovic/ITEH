@@ -448,6 +448,9 @@ class glavni_model extends CI_model {
 	function obrisi_clanak($idClanka) {
 
 		$this -> db -> delete('clanak', array('clanakID' => $idClanka));
+
+		//brisanje spoljnjih kljuceva
+		$this -> db -> delete('clanakkategorija', array('clanakID' => $idClanka));
 		return;
 
 	}

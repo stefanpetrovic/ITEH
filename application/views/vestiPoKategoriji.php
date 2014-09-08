@@ -54,7 +54,13 @@
 							echo '<li><a href="' .  $url . $i . '">' . ($i + 1) . '</a></li>';
 						}
 					?>
-					<li><a href="<?php $page = $this->uri->segment(4); if ($page < $brojStrana - 1) $page += 1; else $page = $brojStrana - 1; echo $page; ?>">&raquo;</a></li>
+					<li><a href="<?php $page = $this->uri->segment(4); 
+										if ($page < $brojStrana - 1) $page += 1;
+										elseif ($brojStrana == 0) {
+											$page = 0;
+										}
+										else $page = $brojStrana - 1; 
+										echo $page; ?>">&raquo;</a></li>
 				</ul>
 			</div>
 		</div>

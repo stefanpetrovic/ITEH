@@ -5,7 +5,7 @@
 
 
  <!-- Article column -->
- <div class="col-md-9 main-col" id="news-one">
+ <div class="col-md-8 main-col" id="news-one">
 
   <h2 class="col-md-offset-2">Izmeni komentar</h2>
   <form class="form-horizontal" role="form" action="edt_clanak" method="post">

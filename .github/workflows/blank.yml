@@ -23,7 +23,7 @@ jobs:
       - name: Check out the repository to the runner
         uses: actions/checkout@v4  
       - name: Make the script files executable
-        run: chmod +x my-script.sh my-other-script.sh
+        run: chmod +x kotling-comment-checker.sh
       - name: Run the scripts
         run: |
           ./kotling-comment-checker.sh
